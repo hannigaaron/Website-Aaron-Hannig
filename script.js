@@ -175,17 +175,34 @@
   /* ======================================================================
      Einblendungen — GSAP wenn da, sonst IntersectionObserver
      ====================================================================== */
-  const revealables = $$('.reveal');
+  const revealables = $$('.reveal').filter(el => !el.closest('.hero'));
 
   if (hasGSAP) {
     gsap.set(revealables, { opacity: 0, y: 30 });
-    ScrollTrigger.batch(revealables, {
-      start: 'top 88%',
-      onEnter: (batch) => gsap.to(batch, {
-        opacity: 1, y: 0, duration: .9, stagger: .09, ease: 'power3.out', overwrite: true,
-        onStart: () => batch.forEach(el => el.classList.add('is-visible'))
-      })
+    const show = (els, stagger = { each: .09, amount: .7 }) => gsap.to(els, {
+      opacity: 1, y: 0, duration: .8, stagger, ease: 'power3.out', overwrite: true,
+      onStart: () => els.forEach(el => el.classList.add('is-visible'))
     });
+    ScrollTrigger.batch(revealables, { start: 'top 88%', onEnter: (b) => show(b) });
+
+    // Sicherheitsnetz: bei Sprungmarken oder sehr schnellem Scrollen kann die
+    // Staffel-Animation einen Abschnitt ueberspringen. Was im Bild steht und
+    // noch unsichtbar ist, wird hier nachgezogen.
+    const catchUp = () => {
+      const late = revealables.filter(el => {
+        if (el.classList.contains('is-visible')) return false;
+        const r = el.getBoundingClientRect();
+        return r.top < innerHeight * .95 && r.bottom > 0;
+      });
+      if (late.length) show(late, { each: .04, amount: .35 });
+    };
+    let catchTimer;
+    addEventListener('scroll', () => {
+      clearTimeout(catchTimer);
+      catchTimer = setTimeout(catchUp, 180);
+    }, { passive: true });
+    ScrollTrigger.addEventListener('refresh', catchUp);
+    setTimeout(catchUp, 600);
   } else if (reduced || !('IntersectionObserver' in window)) {
     revealables.forEach(el => el.classList.add('is-visible'));
   } else {
@@ -219,6 +236,27 @@
      ====================================================================== */
   if (hasGSAP) {
 
+    /* ---------- Auftakt: die Headline kommt gross und zieht sich zusammen ---------- */
+    const titleLines = $$('.hero-title .line > span');
+    const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+    gsap.set('.hero-title', { transformOrigin: '18% 50%' });
+    gsap.set(titleLines, { y: 0, yPercent: 108, opacity: 0 });
+    gsap.set(['.eyebrow', '.hero .lead', '.hero-cta', '.hero .rating', '.stats'], { opacity: 0, y: 22 });
+    gsap.set('.hero-media img', { scale: 1.22, opacity: 0, transformOrigin: '60% 30%' });
+
+    intro
+      .to(titleLines, { yPercent: 0, opacity: 1, duration: 1, stagger: .09 })
+      .from('.hero-title', { scale: 1.42, duration: 1.5, ease: 'power4.out' }, 0)
+      .to('.hero-media img', { scale: 1, opacity: 1, duration: 1.6, ease: 'power3.out' }, .25)
+      .to('.eyebrow', { opacity: 1, y: 0, duration: .7 }, .55)
+      .to('.hero .lead', { opacity: 1, y: 0, duration: .7 }, .7)
+      .to('.hero-cta', { opacity: 1, y: 0, duration: .7 }, .82)
+      .to('.hero .rating', { opacity: 1, y: 0, duration: .7,
+          onStart: () => $('.hero .rating')?.classList.add('is-visible') }, .94)
+      .to('.stats', { opacity: 1, y: 0, duration: .7,
+          onStart: () => $('.stats')?.classList.add('is-visible') }, 1.02);
+
     // Hero: Text und Bild wandern beim Scrollen unterschiedlich schnell
     gsap.to('.hero-inner', {
       yPercent: -14, opacity: .35, ease: 'none',
@@ -229,12 +267,26 @@
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: .6 }
     });
 
-    // Fotos: sanfter Parallaxe-Versatz im Rahmen
-    $$('.media-frame img').forEach(img => {
-      gsap.fromTo(img, { yPercent: -7 }, {
-        yPercent: 7, ease: 'none',
-        scrollTrigger: { trigger: img.closest('.media-frame'), start: 'top bottom', end: 'bottom top', scrub: true }
-      });
+    // Hero-Foto: schiebt sich beim Wegscrollen leicht hoch und zu
+    gsap.to('.hero-media img', {
+      yPercent: -6, scale: 1.05, ease: 'none',
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: .5 }
+    });
+
+    // Coach-Foto und die Fläche dahinter laufen gegeneinander
+    gsap.fromTo('.coach-media img', { yPercent: 6 }, {
+      yPercent: -6, ease: 'none',
+      scrollTrigger: { trigger: '.coach-media', start: 'top bottom', end: 'bottom top', scrub: true }
+    });
+    gsap.fromTo('.coach-shape', { yPercent: -8, xPercent: -3 }, {
+      yPercent: 8, xPercent: 3, ease: 'none',
+      scrollTrigger: { trigger: '.coach-media', start: 'top bottom', end: 'bottom top', scrub: true }
+    });
+
+    // Foto im Abschluss-CTA: langsamer Zug nach oben
+    gsap.fromTo('.cta-bg img', { yPercent: 8, scale: 1.06 }, {
+      yPercent: -8, ease: 'none',
+      scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'bottom top', scrub: true }
     });
 
     // Laufband: läuft endlos, reagiert aber auf Scrollrichtung und -tempo
@@ -255,18 +307,20 @@
       });
     }
 
-    // Kacheln und Zitate: gestaffelt, mit leichtem Aufziehen
+    // Kacheln und Zitate: zusaetzliche Staffelung.
+    // Wichtig: ohne opacity — die gehoert der Einblendung oben, sonst
+    // starten sich beide gegenseitig neu und die Elemente flackern.
     [['.tile', .07], ['.quote', .09], ['.perk', .08], ['.goals li', .06]].forEach(([sel, st]) => {
       ScrollTrigger.batch(sel, {
-        start: 'top 90%',
-        onEnter: b => gsap.from(b, { opacity: 0, y: 34, scale: .985, duration: .8, stagger: st, ease: 'power3.out', overwrite: 'auto' })
+        start: 'top 90%', once: true,
+        onEnter: b => gsap.from(b, { y: 34, scale: .985, duration: .8, stagger: st, ease: 'power3.out' })
       });
     });
 
     // Kennzahlen im Hero: laufen von links herein
     ScrollTrigger.batch('.stat', {
-      start: 'top 92%',
-      onEnter: b => gsap.from(b, { opacity: 0, x: -18, duration: .7, stagger: .08, ease: 'power3.out' })
+      start: 'top 92%', once: true,
+      onEnter: b => gsap.from(b, { x: -18, duration: .7, stagger: .08, ease: 'power3.out' })
     });
 
     // Die Kette baut sich Glied für Glied auf
@@ -301,6 +355,28 @@
       el.addEventListener('mouseleave', () => {
         if (hasGSAP) gsap.to(el, { x: 0, y: 0, duration: .6, ease: 'elastic.out(1, .4)' });
         else el.style.transform = '';
+      });
+    });
+  }
+
+  /* ======================================================================
+     Fotos neigen sich leicht zur Maus — kostet nichts, wirkt raeumlich
+     ====================================================================== */
+  if (hasGSAP && matchMedia('(pointer: fine)').matches) {
+    $$('.hero-media img, .coach-media img').forEach(el => {
+      el.classList.add('tilt-3d');
+      const zone = el.parentElement;
+      zone.addEventListener('mousemove', (e) => {
+        const r = zone.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - .5;
+        const py = (e.clientY - r.top) / r.height - .5;
+        gsap.to(el, {
+          rotationY: px * 7, rotationX: -py * 7, transformPerspective: 900,
+          duration: .7, ease: 'power3.out', overwrite: 'auto'
+        });
+      });
+      zone.addEventListener('mouseleave', () => {
+        gsap.to(el, { rotationY: 0, rotationX: 0, duration: 1.1, ease: 'elastic.out(1,.5)' });
       });
     });
   }

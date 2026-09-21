@@ -36,12 +36,13 @@ Alle unter `img/`, aus den Originalen zugeschnitten:
 
 | Datei | Format | Ort |
 |---|---|---|
-| `aaron-hero.jpg` | 4:5 | Hero |
-| `aaron-gym.jpg` | 4:5, bis knapp unter die Hüfte | Ziele-Abschnitt |
-| `aaron-portrait.jpg` | 4:5 | Coach-Abschnitt, schmale Spalte |
+| `aaron-hero.jpg` | 4:5 | Hero — randlos bis zum rechten Bildschirmrand, linke Kante diagonal |
+| `aaron-portrait.jpg` | 4:5 | Coach — versetzt, mit blauer Fläche dahinter |
+| `aaron-gym.jpg` | 4:5 | Abschluss-CTA — als aufgehellter Hintergrund rechts |
 
-Der Ablauf-Abschnitt hat bewusst kein Bild: kein vorhandenes Foto lässt sich
-ins Querformat schneiden, ohne Aaron anzuschneiden.
+Jedes Foto bekommt eine andere Behandlung. Dreimal derselbe abgerundete
+Kasten neben Text sieht nach Vorlage aus. Ablauf und Ziele haben bewusst
+kein Bild.
 
 Logo-Dateien (`logo.png`, `logo-mark.png`, `favicon.png`) werden aus
 `pca logo .png` freigestellt.
