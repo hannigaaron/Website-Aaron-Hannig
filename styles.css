@@ -355,8 +355,21 @@ section[id],main[id]{scroll-margin-top:86px}
   .rating-text{font-size:.88rem}
   .media-frame::after{font-size:.74rem}
 
-  .hero{grid-template-columns:1fr;padding-top:2rem}
-  .hero-media{max-width:300px;margin-top:.5rem}
+  /* Hero bleibt auch auf dem Handy zweispaltig: Bild steht neben der Headline,
+     Lead, Buttons und Bewertung laufen darunter ueber die volle Breite */
+  .hero{
+    grid-template-columns:minmax(0,1fr) minmax(104px,34%);
+    column-gap:clamp(.8rem,3vw,1.6rem);row-gap:0;
+    padding-top:1.7rem;align-items:start
+  }
+  .hero-inner{display:contents}
+  .eyebrow{grid-column:1/-1;grid-row:1;margin-bottom:1rem}
+  .hero-title{grid-column:1;grid-row:2;align-self:center}
+  .hero-media{grid-column:2;grid-row:2;align-self:center;margin:0;max-width:none}
+  .lead{grid-column:1/-1;grid-row:3;margin:1.5rem 0 1.7rem;max-width:none}
+  .hero-cta{grid-column:1/-1;grid-row:4}
+  .rating{grid-column:1/-1;grid-row:5;justify-self:start;margin-top:1.3rem}
+  h1{font-size:clamp(2.35rem,9.2vw,3.4rem)}
   .nav{flex-wrap:wrap;row-gap:.65rem}
   .nav-links{order:3;width:100%;gap:1.35rem;overflow-x:auto;scrollbar-width:none;font-size:.88rem;padding-bottom:.15rem}
   .nav-links::-webkit-scrollbar{display:none}
@@ -521,8 +534,9 @@ html.lenis,html.lenis body{height:auto}
   .coach-media{max-width:300px}
 }
 @media (max-width:820px){
-  .hero-media{margin-right:0;max-width:340px;margin-inline:auto}
-  .hero-media img{max-height:none;clip-path:polygon(0 0,100% 0,100% 100%,0 100%);border-radius:var(--r)}
+  .hero-media{margin-right:0}
+  .hero-media img{max-height:none;aspect-ratio:3/4;object-position:56% 18%;
+    clip-path:polygon(0 0,100% 0,100% 100%,0 100%);border-radius:var(--r)}
   .coach-media{max-width:260px;justify-self:start}
   .coach-shape{left:-1rem;top:1rem;right:1rem;bottom:-1rem}
   .cta-bg img{height:100%;opacity:.55}
@@ -570,3 +584,6 @@ html.lenis,html.lenis body{height:auto}
   .wait-grid{grid-template-columns:1fr;gap:2rem}
   .wait-media{max-width:340px}
 }
+/* Variante B: Kalender an der Bildstelle */
+.wait-cal{background:var(--paper);border:1px solid var(--line-soft);border-radius:var(--r);
+  overflow:hidden;box-shadow:0 30px 70px -44px rgba(46,46,46,.45)}
