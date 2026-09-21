@@ -32,7 +32,10 @@ Ausschließlich aus dem Logo, als Variablen oben in `styles.css`:
 `--ink` `#2e2e2e`, `--ink-mid` `#585858`.
 
 ### Bilder
-Alle unter `img/`, aus den Originalen zugeschnitten:
+Alle unter `img/`, aus den Originalen zugeschnitten. Bei den Studiofotos
+wird zusätzlich das kräftige Orange der Laufbahn zurückgenommen — nur dort,
+wo die Sättigung über 120 liegt, damit Hauttöne unberührt bleiben —, danach
+nachgeschärft:
 
 | Datei | Format | Ort |
 |---|---|---|
