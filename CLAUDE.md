@@ -39,6 +39,7 @@ Alle unter `img/`, aus den Originalen zugeschnitten:
 | `aaron-hero.jpg` | 4:5 | Hero — randlos bis zum rechten Bildschirmrand, linke Kante diagonal |
 | `aaron-portrait.jpg` | 4:5 | Coach — versetzt, mit blauer Fläche dahinter |
 | `aaron-gym.jpg` | 4:5 | Abschluss-CTA — als aufgehellter Hintergrund rechts |
+| `aaron-call.jpg` | 6:7 | „Worauf wartest du?" — **fehlt noch**, zeigt bis dahin einen Platzhalter |
 
 Jedes Foto bekommt eine andere Behandlung. Dreimal derselbe abgerundete
 Kasten neben Text sieht nach Vorlage aus. Ablauf und Ziele haben bewusst
@@ -54,15 +55,11 @@ Drei Bibliotheken, alle über erlaubte CDNs:
 |---|---|---|
 | GSAP + ScrollTrigger | scroll-gesteuerte Animationen, Parallaxe, Laufband | immer |
 | Lenis | weiches Scrollen mit Nachlauf | immer |
-| three.js + Vanta.NET | 3D-Netz hinter dem Hero | erst zur Laufzeit, nur Desktop |
 
 Regeln dazu:
 - Alles muss ohne diese Bibliotheken funktionieren. Fällt ein CDN aus, greift
   der IntersectionObserver-Fallback und die Seite bleibt vollständig lesbar.
 - `prefers-reduced-motion` schaltet Lenis, GSAP **und** Vanta komplett ab.
-- three.js + Vanta sind zusammen rund 630 KB und werden deshalb nie auf
-  Handy oder Tablet geladen (Grenze: 820 px, nur `pointer:fine`, kein
-  `saveData`).
 - `scroll-behavior:smooth` gehört nicht ins CSS — das arbeitet gegen Lenis.
   Sprungmarken laufen über `lenis.scrollTo()` mit Versatz für die Navigation.
 

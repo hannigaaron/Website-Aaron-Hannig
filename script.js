@@ -234,6 +234,26 @@
   /* ======================================================================
      GSAP: die scroll-gesteuerten Effekte
      ====================================================================== */
+  /* Text in Wörter zerlegen, jedes in einem Maskenkasten — damit sie
+     einzeln von unten hereinfahren können, ohne über die Zeile zu ragen. */
+  const splitWords = (el) => {
+    if (!el || el.dataset.splitDone) return [];
+    el.dataset.splitDone = '1';
+    const words = el.textContent.trim().split(/\s+/);
+    el.textContent = '';
+    return words.map((w, i) => {
+      const wrap = document.createElement('span');
+      wrap.className = 'word-wrap';
+      const inner = document.createElement('span');
+      inner.className = 'word';
+      inner.textContent = w;
+      wrap.appendChild(inner);
+      el.appendChild(wrap);
+      if (i < words.length - 1) el.appendChild(document.createTextNode(' '));
+      return inner;
+    });
+  };
+
   if (hasGSAP) {
 
     /* ---------- Auftakt: die Headline kommt gross und zieht sich zusammen ---------- */
@@ -246,9 +266,13 @@
     gsap.set('.hero-media img', { scale: 1.22, opacity: 0, transformOrigin: '60% 30%' });
 
     intro
-      .to(titleLines, { yPercent: 0, opacity: 1, duration: 1, stagger: .09 })
-      .from('.hero-title', { scale: 1.42, duration: 1.5, ease: 'power4.out' }, 0)
-      .to('.hero-media img', { scale: 1, opacity: 1, duration: 1.6, ease: 'power3.out' }, .25)
+      .to(titleLines, { yPercent: 0, opacity: 1, duration: 1.1, stagger: .11, ease: 'expo.out' })
+      .from('.hero-title', {
+        scale: 1.9, xPercent: 6, yPercent: 8, filter: 'blur(14px)',
+        duration: 2.1, ease: 'expo.out'
+      }, 0)
+      .from('.hero-title .accent span', { color: '#2e2e2e', duration: 1.1, ease: 'power2.out' }, .85)
+      .to('.hero-media img', { scale: 1, opacity: 1, duration: 1.8, ease: 'power3.out' }, .3)
       .to('.eyebrow', { opacity: 1, y: 0, duration: .7 }, .55)
       .to('.hero .lead', { opacity: 1, y: 0, duration: .7 }, .7)
       .to('.hero-cta', { opacity: 1, y: 0, duration: .7 }, .82)
@@ -256,6 +280,52 @@
           onStart: () => $('.hero .rating')?.classList.add('is-visible') }, .94)
       .to('.stats', { opacity: 1, y: 0, duration: .7,
           onStart: () => $('.stats')?.classList.add('is-visible') }, 1.02);
+
+    /* ---------- Überschriften fahren Wort für Wort herein ---------- */
+    $$('h2[data-split]').forEach(h2 => {
+      const words = splitWords(h2);
+      if (!words.length) return;
+      gsap.set(words, { yPercent: 115, opacity: 0 });
+      ScrollTrigger.create({
+        trigger: h2, start: 'top 86%', once: true,
+        onEnter: () => gsap.to(words, {
+          yPercent: 0, opacity: 1, duration: .85, stagger: .055, ease: 'expo.out'
+        })
+      });
+    });
+
+    /* ---------- Vorzeilen schieben sich seitlich herein ---------- */
+    $$('.kicker').forEach(k => {
+      ScrollTrigger.create({
+        trigger: k, start: 'top 92%', once: true,
+        onEnter: () => gsap.from(k, { x: -22, opacity: 0, duration: .7, ease: 'power3.out' })
+      });
+    });
+
+    /* ---------- FAQ: Zeilen klappen nacheinander auf ---------- */
+    ScrollTrigger.batch('.faq details', {
+      start: 'top 92%', once: true,
+      onEnter: b => gsap.from(b, { y: 22, duration: .6, stagger: .06, ease: 'power3.out' })
+    });
+
+    /* ---------- Worauf wartest du: Bild und Fläche laufen gegeneinander ---------- */
+    if ($('.wait-media')) {
+      gsap.fromTo('.wait-media img', { yPercent: 7, scale: 1.04 }, {
+        yPercent: -7, ease: 'none',
+        scrollTrigger: { trigger: '.wait-media', start: 'top bottom', end: 'bottom top', scrub: true }
+      });
+    }
+
+    /* ---------- Abschluss: one day / day one kippt herein ---------- */
+    if ($('.day-one')) {
+      ScrollTrigger.create({
+        trigger: '.day-one', start: 'top 88%', once: true,
+        onEnter: () => gsap.from('.day-one > span', {
+          y: 26, rotateX: -60, opacity: 0, transformPerspective: 600,
+          duration: .8, stagger: .12, ease: 'back.out(1.6)'
+        })
+      });
+    }
 
     // Hero: Text und Bild wandern beim Scrollen unterschiedlich schnell
     gsap.to('.hero-inner', {
@@ -363,7 +433,7 @@
      Fotos neigen sich leicht zur Maus — kostet nichts, wirkt raeumlich
      ====================================================================== */
   if (hasGSAP && matchMedia('(pointer: fine)').matches) {
-    $$('.hero-media img, .coach-media img').forEach(el => {
+    $$('.hero-media img, .coach-media img, .wait-media img').forEach(el => {
       el.classList.add('tilt-3d');
       const zone = el.parentElement;
       zone.addEventListener('mousemove', (e) => {
@@ -381,61 +451,4 @@
     });
   }
 
-  /* ======================================================================
-     Vanta: 3D-Netz hinter dem Hero.
-     three.js + Vanta sind zusammen rund 630 KB — deshalb werden sie erst
-     zur Laufzeit geladen, und nur dort, wo sie auch etwas bringen.
-     ====================================================================== */
-  const vantaEl = $('#hero-canvas');
-  const wantsVanta = vantaEl && !reduced
-    && innerWidth > 820
-    && matchMedia('(pointer: fine)').matches
-    && !navigator.connection?.saveData;
-
-  if (wantsVanta) {
-    const load = (src) => new Promise((res, rej) => {
-      const s = document.createElement('script');
-      s.src = src; s.onload = res; s.onerror = rej;
-      document.head.appendChild(s);
-    });
-
-    load('https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js')
-      .then(() => load('https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.net.min.js'))
-      .then(() => {
-        if (!window.VANTA) return;
-        const css = getComputedStyle(document.documentElement);
-        const hex = (name, fallback) => {
-          const v = css.getPropertyValue(name).trim();
-          return /^#[0-9a-f]{6}$/i.test(v) ? parseInt(v.slice(1), 16) : fallback;
-        };
-        const fx = VANTA.NET({
-          el: vantaEl,
-          backgroundColor: 0xffffff,
-          color: hex('--blue', 0x93ddf4),
-          points: 7.5,
-          maxDistance: 23,
-          spacing: 19,
-          showDots: true,
-          mouseControls: true,
-          touchControls: false,
-          gyroControls: false,
-          minHeight: 200,
-          minWidth: 200,
-          scale: 1,
-          scaleMobile: 1
-        });
-        vantaEl.classList.add('is-live');
-
-        // aus dem Bild gescrollt: Rechenzeit sparen
-        if ('IntersectionObserver' in window) {
-          new IntersectionObserver(([e]) => {
-            if (!fx) return;
-            e.isIntersecting ? fx.resize() : null;
-            if (fx.renderer) fx.renderer.setAnimationLoop(e.isIntersecting ? fx.renderer.getAnimationLoop?.() ?? null : null);
-          }, { threshold: 0 }).observe(vantaEl);
-        }
-        addEventListener('pagehide', () => fx.destroy?.());
-      })
-      .catch(() => { /* ohne 3D-Hintergrund sieht die Seite genauso gut aus */ });
-  }
 })();

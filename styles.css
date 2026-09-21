@@ -96,13 +96,9 @@ p{text-wrap:pretty}
 .hero{
   position:relative;max-width:var(--maxw);margin:0 auto;
   padding:clamp(2.5rem,6vw,5rem) var(--gut) clamp(2rem,4vw,3rem);
-  display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,5vw,3.5rem);align-items:center
+  display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(2rem,5vw,4rem);align-items:center
 }
-.hero-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;opacity:.55;pointer-events:none}
 .hero-inner{position:relative;min-width:0;z-index:1}
-.hero-inner::before{content:"";position:absolute;inset:-4rem -6rem -2rem -6rem;z-index:-1;
-  background:radial-gradient(60% 55% at 35% 45%,#fff 45%,rgba(255,255,255,.75) 70%,transparent 100%);
-  pointer-events:none}
 .eyebrow{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:1.3rem}
 
 .hero-title{display:flex;flex-direction:column}
@@ -466,11 +462,6 @@ section[id],main[id]{scroll-margin-top:86px}
 /* ---------- Fotos ---------- */
 
 
-/* ---------- Vanta-Hintergrund ---------- */
-.hero-canvas{position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;
-  transition:opacity 1.2s var(--ease)}
-.hero-canvas.is-live{opacity:.5}
-.hero-canvas canvas{display:block}
 /* Lenis */
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
@@ -490,7 +481,7 @@ html.lenis,html.lenis body{height:auto}
   align-self:stretch
 }
 .hero-media img{
-  width:100%;height:auto;max-height:76vh;object-fit:cover;object-position:60% 25%;
+  width:100%;height:auto;max-height:58vh;object-fit:cover;object-position:58% 22%;
   clip-path:polygon(9% 0,100% 0,100% 100%,0 100%);
   will-change:transform
 }
@@ -535,4 +526,43 @@ html.lenis,html.lenis body{height:auto}
   .coach-media{max-width:260px;justify-self:start}
   .coach-shape{left:-1rem;top:1rem;right:1rem;bottom:-1rem}
   .cta-bg img{height:100%;opacity:.55}
+}
+
+/* ==========================================================================
+   Wort-Animation der Überschriften
+   ========================================================================== */
+.word{display:inline-block;will-change:transform}
+.word-wrap{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em}
+
+/* ==========================================================================
+   Worauf wartest du
+   ========================================================================== */
+.wait-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+.wait-media{margin:0;position:relative}
+.wait-media img{
+  width:100%;height:auto;border-radius:2px;
+  clip-path:polygon(0 0,100% 6%,100% 100%,0 94%);
+  will-change:transform
+}
+.wait-media::before{
+  content:"";position:absolute;inset:auto -1.4rem -1.4rem 1.4rem;height:70%;z-index:-1;
+  background:var(--blue);opacity:.3;
+  clip-path:polygon(0 0,100% 6%,100% 100%,0 94%)
+}
+.wait-media.is-empty{
+  aspect-ratio:6/7;background:var(--paper);border:1px dashed var(--line);
+  display:grid;place-items:center;border-radius:2px
+}
+.wait-media.is-empty::before{display:none}
+.wait-media.is-empty::after{
+  content:"img/aaron-call.jpg";font-size:.78rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft)
+}
+.wait-body>*+*{margin-top:1.1rem}
+.wait-body h2{margin-bottom:.4rem}
+.wait-body .btn{margin-top:1rem}
+
+@media (max-width:900px){
+  .wait-grid{grid-template-columns:1fr;gap:2rem}
+  .wait-media{max-width:340px}
 }
