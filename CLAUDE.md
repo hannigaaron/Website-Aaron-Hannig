@@ -46,6 +46,25 @@ ins Querformat schneiden, ohne Aaron anzuschneiden.
 Logo-Dateien (`logo.png`, `logo-mark.png`, `favicon.png`) werden aus
 `pca logo .png` freigestellt.
 
+### Animationen
+Drei Bibliotheken, alle über erlaubte CDNs:
+
+| Bibliothek | Wofür | Geladen |
+|---|---|---|
+| GSAP + ScrollTrigger | scroll-gesteuerte Animationen, Parallaxe, Laufband | immer |
+| Lenis | weiches Scrollen mit Nachlauf | immer |
+| three.js + Vanta.NET | 3D-Netz hinter dem Hero | erst zur Laufzeit, nur Desktop |
+
+Regeln dazu:
+- Alles muss ohne diese Bibliotheken funktionieren. Fällt ein CDN aus, greift
+  der IntersectionObserver-Fallback und die Seite bleibt vollständig lesbar.
+- `prefers-reduced-motion` schaltet Lenis, GSAP **und** Vanta komplett ab.
+- three.js + Vanta sind zusammen rund 630 KB und werden deshalb nie auf
+  Handy oder Tablet geladen (Grenze: 820 px, nur `pointer:fine`, kein
+  `saveData`).
+- `scroll-behavior:smooth` gehört nicht ins CSS — das arbeitet gegen Lenis.
+  Sprungmarken laufen über `lenis.scrollTo()` mit Versatz für die Navigation.
+
 ## Wichtig: Arbeit sichern
 Der Container ist flüchtig. Committen reicht nicht — ohne Push ist die
 Arbeit beim nächsten Start weg. Der letzte Rettungsanker war das
