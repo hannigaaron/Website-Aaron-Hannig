@@ -39,7 +39,8 @@ Alle unter `img/`, aus den Originalen zugeschnitten:
 | `aaron-hero.jpg` | 4:5 | Hero — randlos bis zum rechten Bildschirmrand, linke Kante diagonal |
 | `aaron-portrait.jpg` | 4:5 | Coach — versetzt, mit blauer Fläche dahinter |
 | `aaron-gym.jpg` | 4:5 | Abschluss-CTA — als aufgehellter Hintergrund rechts |
-| `aaron-call.jpg` | 6:7 | „Worauf wartest du?" — **fehlt noch**, zeigt bis dahin einen Platzhalter |
+| `aaron-call.jpg` | 6:7 | „Worauf wartest du?" — offene Arme |
+| `aaron-point.jpg` | 6:7 | liegt bereit; zeigt mit dem Finger, als Alternative zu `aaron-call.jpg` |
 
 Jedes Foto bekommt eine andere Behandlung. Dreimal derselbe abgerundete
 Kasten neben Text sieht nach Vorlage aus. Ablauf und Ziele haben bewusst
