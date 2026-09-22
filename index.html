@@ -11,9 +11,7 @@
 <meta property="og:description" content="Lösungen statt Ausreden. 1:1 Online Coaching für Menschen mit vollem Kalender." />
 <meta property="og:locale" content="de_DE" />
 <meta property="og:image" content="logo.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="fonts/fonts.css" />
 <link rel="stylesheet" href="styles.css" />
 <link rel="icon" href="favicon.png" type="image/png" />
 <link rel="apple-touch-icon" href="favicon.png" />
@@ -244,14 +242,17 @@
   <section class="section section-alt cut-top wait" id="wartest">
     <div class="wait-grid has-cal">
       <div class="wait-cal reveal">
-        <iframe class="wait-frame" loading="lazy" title="Termin für das kostenlose Erstgespräch aussuchen"
-                src="https://calendly.com/personalcoach-aaron/dein-kostenloses-erstgesprach?hide_gdpr_banner=1&amp;hide_landing_page_details=1&amp;background_color=ffffff&amp;text_color=2e2e2e&amp;primary_color=10708d&amp;embed_domain=personalcoachaaron.de&amp;embed_type=Inline"></iframe>
         <div class="cal-card">
           <img src="logo-mark.png" alt="" class="cal-mark" width="1136" height="453" />
           <p class="cal-kicker">Kostenloses Erstgespräch</p>
           <p class="cal-meta">15–30 Minuten · online · ohne Verpflichtung</p>
-          <a href="https://calendly.com/personalcoach-aaron/dein-kostenloses-erstgesprach" target="_blank" rel="noopener" class="btn btn-lg magnetic">Termin aussuchen</a>
-          <p class="cal-note">Der Kalender mit allen freien Zeiten öffnet sich bei Calendly.</p>
+          <button type="button" class="btn btn-lg magnetic" id="cal-load">Kalender öffnen</button>
+          <p class="cal-note">
+            Erst mit deinem Klick wird der Kalender von Calendly geladen. Dabei
+            werden deine IP-Adresse und Browserdaten an Calendly LLC in den USA
+            übertragen. Mehr dazu in der <a href="datenschutz.html">Datenschutzerklärung</a>.
+          </p>
+          <p class="cal-alt"><a href="https://calendly.com/personalcoach-aaron/dein-kostenloses-erstgesprach" target="_blank" rel="noopener">Lieber direkt bei Calendly öffnen</a></p>
         </div>
       </div>
       <div class="wait-body">
@@ -294,8 +295,9 @@
     </div>
     <div>
       <h4>Rechtliches</h4>
-      <a href="https://www.personalcoachaaron.de/_files/ugd/3054f6_9079946bdf8141ab918f6cf9e1b65155.pdf" target="_blank" rel="noopener">AGB</a>
-      <a href="https://www.personalcoachaaron.de/impressum" target="_blank" rel="noopener">Impressum</a>
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="agb.html">AGB &amp; Widerruf</a>
       <a href="https://www.google.com/search?q=personal+coach+aaron&amp;si=APenkKm7iecQ4G6P-TsbSMFKIQtv3EFIqRAFw-i8uEbk55Z-_1HJAKaCu-7s0vxSbHilaY_stkGp_h8Fku73sNhi5wH-A8qeJwIAHu96c6RLSzbSE3kk6GQ%3D&amp;uds=AJ5uw19ot_8pmnrWc3HjfIZM6VfDwAiEqXJwW23bvq3-ImcYB1xhl8R3egVuulxiFGLac2w6RVb62G-wjXagGKRVzlVHx8exszKPNavJNcGTMdCuLgq7gHdAZgYfiK2mUj7uU4qjky-I" target="_blank" rel="noopener">Google Rezensionen</a>
     </div>
   </div>
@@ -304,10 +306,10 @@
 
 <a class="sticky-cta" href="https://calendly.com/personalcoach-aaron/dein-kostenloses-erstgesprach" target="_blank" rel="noopener" id="sticky-cta">Kostenloses Erstgespräch</a>
 <!-- GSAP + ScrollTrigger: Scroll-gesteuerte Animationen -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
 <!-- Lenis: weiches Scrollen mit Nachlauf -->
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+<script src="vendor/lenis.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

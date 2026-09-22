@@ -532,47 +532,52 @@
   }
 
   /* ----------------------------------------------------------------------
-     Calendly laeuft als eigener iframe — ohne fremdes Skript auf der Seite.
-     Die eingebettete Seite meldet sich per postMessage; daran erkennen wir,
-     ob sie wirklich durchgekommen ist, und uebernehmen gleich ihre Hoehe.
-     Bleibt die Meldung aus (kein Netz, gesperrte Einbettung), verschwindet
-     der Rahmen und die Karte darunter uebernimmt den Weg zum Termin.
+     Calendly, Zwei-Klick-Loesung: Der Kalender wird erst nach einem Klick
+     geladen. Vorher geht keine Anfrage an Calendly und damit auch keine
+     IP-Adresse in die USA. Die eingebettete Seite meldet sich per
+     postMessage — daran erkennen wir, ob sie durchgekommen ist, und
+     uebernehmen gleich ihre Hoehe. Bleibt die Meldung aus, kommt die Karte
+     mit dem Direktlink zurueck.
      ---------------------------------------------------------------------- */
   const calBox = $('.wait-cal');
-  if (calBox) {
-    const frame = calBox.querySelector('.wait-frame');
-    let alive = false;
+  const calBtn = $('#cal-load');
+  if (calBox && calBtn) {
+    const url = 'https://calendly.com/personalcoach-aaron/dein-kostenloses-erstgesprach'
+              + '?hide_gdpr_banner=1&hide_landing_page_details=1'
+              + '&background_color=ffffff&text_color=2e2e2e&primary_color=10708d'
+              + '&embed_domain=' + encodeURIComponent(location.hostname)
+              + '&embed_type=Inline';
 
-    const onMessage = (e) => {
-      if (typeof e.origin !== 'string' || e.origin.indexOf('calendly.com') === -1) return;
-      const data = e.data || {};
-      if (typeof data.event !== 'string' || data.event.indexOf('calendly.') !== 0) return;
+    calBtn.addEventListener('click', () => {
+      if (calBox.classList.contains('is-loading')) return;
+      calBox.classList.add('is-loading');
 
-      if (!alive) { alive = true; calBox.classList.add('is-ready'); }
+      const frame = document.createElement('iframe');
+      frame.className = 'wait-frame';
+      frame.title = 'Termin für das kostenlose Erstgespräch aussuchen';
+      frame.src = url;
+      calBox.appendChild(frame);
 
-      const h = parseInt(data.payload && data.payload.height, 10);
-      if (h > 400) calBox.style.height = h + 'px';
-    };
+      let alive = false;
+      const onMessage = (e) => {
+        if (typeof e.origin !== 'string' || e.origin.indexOf('calendly.com') === -1) return;
+        const data = e.data || {};
+        if (typeof data.event !== 'string' || data.event.indexOf('calendly.') !== 0) return;
 
-    addEventListener('message', onMessage);
+        if (!alive) { alive = true; calBox.classList.add('is-ready'); }
+        const h = parseInt(data.payload && data.payload.height, 10);
+        if (h > 400) calBox.style.height = h + 'px';
+      };
+      addEventListener('message', onMessage);
 
-    /* Die Frist laeuft erst, wenn der Abschnitt in Sichtweite kommt — vorher
-       laedt der Rahmen ja noch gar nicht. */
-    const giveUpIn = () => setTimeout(() => {
-      if (alive) return;
-      removeEventListener('message', onMessage);
-      frame && frame.remove();
-      calBox.classList.add('is-failed');
-    }, 9000);
-
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver((entries) => {
-        if (entries.some(e => e.isIntersecting)) { io.disconnect(); giveUpIn(); }
-      }, { rootMargin: '400px 0px' });
-      io.observe(calBox);
-    } else {
-      giveUpIn();
-    }
+      setTimeout(() => {
+        if (alive) return;
+        removeEventListener('message', onMessage);
+        frame.remove();
+        calBox.classList.remove('is-loading');
+        calBox.classList.add('is-failed');
+      }, 9000);
+    });
   }
 
 })();

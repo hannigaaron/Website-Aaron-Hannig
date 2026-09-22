@@ -58,12 +58,16 @@ Logo-Dateien (`logo.png`, `logo-mark.png`, `favicon.png`) werden aus
 `pca logo .png` freigestellt.
 
 ### Animationen
-Drei Bibliotheken, alle über erlaubte CDNs:
+Beide Bibliotheken liegen **lokal** unter `vendor/` — kein CDN. Das ist keine
+Geschmacksfrage: Ein CDN-Aufruf überträgt die IP-Adresse des Besuchers an
+einen Dritten und wäre ohne Einwilligung ein Datenschutzverstoß.
 
 | Bibliothek | Wofür | Geladen |
 |---|---|---|
-| GSAP + ScrollTrigger | scroll-gesteuerte Animationen, Parallaxe, Laufband | immer |
-| Lenis | weiches Scrollen mit Nachlauf | immer |
+| GSAP + ScrollTrigger | scroll-gesteuerte Animationen, Parallaxe, Laufband | immer, lokal |
+| Lenis | weiches Scrollen mit Nachlauf | immer, lokal |
+
+Dasselbe gilt für die Schriften unter `fonts/`.
 
 Regeln dazu:
 - Alles muss ohne diese Bibliotheken funktionieren. Fällt ein CDN aus, greift
@@ -71,6 +75,17 @@ Regeln dazu:
 - `prefers-reduced-motion` schaltet Lenis, GSAP **und** Vanta komplett ab.
 - `scroll-behavior:smooth` gehört nicht ins CSS — das arbeitet gegen Lenis.
   Sprungmarken laufen über `lenis.scrollTo()` mit Versatz für die Navigation.
+
+### Datenschutz
+Beim bloßen Aufruf der Seite darf **keine einzige Anfrage an einen
+Drittanbieter** hinausgehen. Der Calendly-Kalender ist die einzige Ausnahme
+und lädt erst nach einem ausdrücklichen Klick (Zwei-Klick-Lösung). Wer eine
+externe Ressource ergänzt, legt sie lokal ab oder hängt sie hinter einen
+Klick — und passt `datenschutz.html` an.
+
+Die Rechtsseiten sind `impressum.html`, `datenschutz.html` und `agb.html`.
+Offene Stellen darin sind mit `<span class="todo">` markiert und gelb
+hinterlegt, damit sie nicht übersehen werden.
 
 ## Wichtig: Arbeit sichern
 Der Container ist flüchtig. Committen reicht nicht — ohne Push ist die

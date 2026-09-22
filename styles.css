@@ -597,32 +597,39 @@ html.lenis,html.lenis body{height:auto}
 .wait-body h2{margin-top:1.4rem;margin-bottom:.4rem}
 .wait-body .btn{margin-top:1rem}
 
-/* Kalender an der Bildstelle: Calendly laeuft im iframe, deshalb feste Hoehe.
-   Bis er geladen ist — und dort, wo fremde Inhalte gesperrt sind — steht an
-   seiner Stelle eine eigene Karte mit dem Weg zum Termin. */
+/* Kalender an der Bildstelle. Er laedt erst auf Klick — bis dahin steht hier
+   eine eigene Karte, die die Hoehe des Kastens vorgibt. Sobald Calendly seine
+   Hoehe meldet, setzt das Skript sie als feste Hoehe. */
 .wait-grid.has-cal{grid-template-columns:1.02fr .98fr;align-items:start}
 .wait-cal{
-  position:relative;height:760px;background:var(--paper);
+  position:relative;background:var(--paper);
   border:1px solid var(--line-soft);border-radius:var(--r);
   overflow:hidden;box-shadow:0 30px 70px -44px rgba(46,46,46,.45)
 }
-.wait-frame{display:block;width:100%;height:100%;border:0;opacity:0;transition:opacity .5s var(--ease)}
+.wait-cal.is-loading,.wait-cal.is-ready{min-height:620px}
+
+.wait-frame{position:absolute;inset:0;display:block;width:100%;height:100%;border:0;
+  opacity:0;transition:opacity .5s var(--ease)}
 .wait-cal.is-ready .wait-frame{opacity:1}
 
 .cal-card{
-  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:.9rem;text-align:center;padding:2rem 1.6rem;
+  position:relative;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:.9rem;text-align:center;padding:3.4rem 1.7rem;
   background:linear-gradient(170deg,var(--paper) 42%,var(--paper-alt) 100%)
 }
+.wait-cal.is-loading .cal-card{position:absolute;inset:0}
 .wait-cal.is-ready .cal-card{display:none}
-/* Kommt der Kalender nicht durch, schrumpft der Kasten auf die Karte */
-.wait-cal.is-failed{height:auto}
-.wait-cal.is-failed .cal-card{position:static;padding-block:3.4rem}
+/* Waehrend der Kalender laedt, wartet der Knopf */
+.wait-cal.is-loading #cal-load{opacity:.55;pointer-events:none}
+
 .cal-mark{width:104px;height:auto;margin-bottom:.3rem}
 .cal-kicker{font-family:var(--display);font-weight:800;font-size:clamp(1.3rem,2.4vw,1.8rem);
   color:var(--ink);letter-spacing:-.02em;line-height:1.1}
 .cal-meta{font-size:.94rem;color:var(--ink-mid)}
-.cal-note{font-size:.84rem;color:var(--ink-soft);max-width:30ch}
+.cal-note{font-size:.82rem;line-height:1.5;color:var(--ink-soft);max-width:38ch}
+.cal-note a{color:var(--blue-deep);text-decoration:underline;text-underline-offset:3px}
+.cal-alt{font-size:.84rem}
+.cal-alt a{color:var(--ink-mid);text-decoration:underline;text-underline-offset:3px}
 
 @media (max-width:900px){
   .wait-grid{grid-template-columns:1fr;gap:2rem}
@@ -630,8 +637,32 @@ html.lenis,html.lenis body{height:auto}
   .wait-grid.has-cal{grid-template-columns:1fr}
   .wait-grid.has-cal .wait-body{order:-1}
   /* Auf schmalen Schirmen stapelt Calendly Kalender und Uhrzeiten -> mehr Hoehe */
-  .wait-cal{height:1020px}
+  .wait-cal.is-loading,.wait-cal.is-ready{min-height:940px}
 }
-@media (max-width:420px){
-  .wait-cal{height:1080px}
-}
+
+/* ==========================================================================
+   Rechtsseiten (Impressum, Datenschutz, AGB)
+   ========================================================================== */
+.legal{max-width:78ch;margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--gut) clamp(3rem,7vw,5rem)}
+.legal .back{display:inline-flex;align-items:center;gap:.5rem;min-height:44px;
+  font-family:var(--display);font-weight:700;font-size:.82rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--blue-deep)}
+.legal h1{font-size:clamp(2.1rem,5vw,3.2rem);line-height:1;margin:.6rem 0 .4rem;max-width:20ch}
+.legal .stand{font-size:.88rem;color:var(--ink-soft);margin-bottom:2.6rem}
+.legal h2{font-size:clamp(1.35rem,2.4vw,1.75rem);line-height:1.15;max-width:none;width:auto;
+  margin:2.8rem 0 .8rem;padding-top:1.6rem;border-top:1px solid var(--line-soft)}
+.legal h3{font-size:1.02rem;margin:1.7rem 0 .5rem}
+.legal p,.legal li{color:var(--ink-mid)}
+.legal p+p{margin-top:.85rem}
+.legal ul,.legal ol{margin:.7rem 0 .7rem 1.1rem;display:grid;gap:.45rem}
+.legal li{padding-left:.2rem}
+.legal a{color:var(--blue-deep);text-decoration:underline;text-underline-offset:3px}
+.legal address{font-style:normal;line-height:1.75}
+.legal .box{background:var(--paper-alt);border:1px solid var(--line-soft);
+  border-radius:var(--r);padding:1.4rem 1.5rem;margin:1.4rem 0}
+.legal .box p:first-child{margin-top:0}
+.todo{background:#fff3c4;color:#6b4e00;font-weight:600;padding:.12em .42em;
+  border-radius:3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.legal-foot{border-top:1px solid var(--line-soft);padding:2rem var(--gut) 3rem;text-align:center}
+.legal-foot a{margin:0 .7rem;font-size:.9rem;color:var(--ink-mid);
+  display:inline-flex;align-items:center;min-height:44px}
