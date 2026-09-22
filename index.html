@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="styles.css" />
 <link rel="icon" href="favicon.png" type="image/png" />
 <link rel="apple-touch-icon" href="favicon.png" />
+  <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
 </head>
 <body>
 <a class="skip" href="#main">Zum Inhalt springen</a>
@@ -44,7 +45,9 @@
   <section class="hero" id="top">
     <div class="hero-inner">
       <p class="eyebrow reveal">1:1 Online Coaching · für vielbeschäftigte Menschen</p>
-      <h1 class="hero-title"><span class="line"><span>Lösungen</span></span><span class="line"><span>statt</span></span><span class="line accent"><span>Ausreden.</span></span></h1>
+      <div class="hero-title-zoom">
+        <h1 class="hero-title"><span class="line"><span>Lösungen</span></span><span class="line"><span>statt</span></span><span class="line accent"><span>Ausreden.</span></span></h1>
+      </div>
       <p class="lead reveal">
         Bereit, etwas zu verändern? Sehr gut. Dann erarbeiten wir eine Struktur,
         die zu deinem Alltag passt — persönlich, 1:1 und völlig ortsunabhängig.
@@ -79,10 +82,12 @@
 
   <!-- ===== ZIELE ===== -->
   <section class="section" id="ziele">
+    <div class="section-head reveal">
+      <p class="kicker">Dabei helfe ich dir</p>
+      <h2 data-split>Das hier ist das Ziel</h2>
+    </div>
     <div class="two-col">
       <div class="col-sticky reveal">
-        <p class="kicker">Dabei helfe ich dir</p>
-        <h2 data-split>Das hier ist das Ziel</h2>
         <p class="sub">Nicht die perfekte Woche. Sondern Veränderungen, die auch dann noch stehen, wenn das Coaching längst vorbei ist.</p>
         <a href="https://calendly.com/personalcoach-aaron/dein-kostenloses-erstgesprach" target="_blank" rel="noopener" class="btn magnetic">Kostenloses Erstgespräch</a>
       </div>
@@ -237,19 +242,19 @@
 
   <!-- ===== WORAUF WARTEST DU ===== -->
   <section class="section section-alt cut-top wait" id="wartest">
-    <div class="wait-grid">
-      <figure class="wait-media reveal">
-        <img src="img/aaron-call.jpg" alt="Aaron Hannig" loading="lazy"
-             width="1200" height="1400" onerror="this.closest('.wait-media').classList.add('is-empty');this.remove()" />
-      </figure>
+    <div class="wait-grid has-cal">
+      <div class="wait-cal reveal">
+        <div class="calendly-inline-widget" data-auto-load="false"
+             data-url="https://calendly.com/personalcoach-aaron/dein-kostenloses-erstgesprach?hide_gdpr_banner=1&amp;hide_landing_page_details=1&amp;background_color=ffffff&amp;text_color=2e2e2e&amp;primary_color=10708d"
+             style="min-width:280px;height:100%"></div>
+        <noscript><p class="wait-fallback"><a href="https://calendly.com/personalcoach-aaron/dein-kostenloses-erstgesprach" target="_blank" rel="noopener">Kalender bei Calendly öffnen</a></p></noscript>
+      </div>
       <div class="wait-body">
         <p class="wait-lead reveal">Wir beide wissen, dass du längst spürst, dass es Zeit ist anzufangen.</p>
         <h2 class="reveal" data-split>Worauf wartest du?</h2>
         <p class="reveal">Der erste Schritt ist ein lockeres Gespräch, fünfzehn bis dreißig Minuten. Ohne Kosten, ohne Verpflichtung — nur die Frage, ob das Coaching das Richtige für dich ist.</p>
         <p class="reveal">Und keine Sorge: Wenn es das aus meiner Sicht nicht ist, sage ich dir das offen.</p>
-        <div class="reveal">
-          <a href="https://calendly.com/personalcoach-aaron/dein-kostenloses-erstgesprach" target="_blank" rel="noopener" class="btn btn-lg magnetic">Termin aussuchen</a>
-        </div>
+        <p class="wait-fallback reveal">Kalender lädt nicht? <a href="https://calendly.com/personalcoach-aaron/dein-kostenloses-erstgesprach" target="_blank" rel="noopener">Direkt bei Calendly öffnen</a></p>
       </div>
     </div>
   </section>
@@ -299,6 +304,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <!-- Lenis: weiches Scrollen mit Nachlauf -->
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+<script src="https://assets.calendly.com/assets/external/widget.js" defer></script>
 <script src="script.js"></script>
 </body>
 </html>

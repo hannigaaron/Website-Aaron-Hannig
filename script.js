@@ -281,6 +281,78 @@
       .to('.stats', { opacity: 1, y: 0, duration: .7,
           onStart: () => $('.stats')?.classList.add('is-visible') }, 1.02);
 
+    /* ---------- Die Headline schrumpft beim Scrollen ---------- */
+    const heroZoom = $('.hero-title-zoom');
+    if (heroZoom) {
+      gsap.fromTo(heroZoom, { scale: 1 }, {
+        scale: matchMedia('(max-width: 820px)').matches ? .82 : .66,
+        yPercent: -4, ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=560', scrub: .55 }
+      });
+    }
+
+    /* ---------- Jede Abschnitts-Headline startet gross und zieht sich zusammen ----------
+       Der Startwert wird pro Überschrift gedeckelt: sie darf ihren eigenen
+       Kasten ausfuellen, damit kein Wort am Rand abgeschnitten wird. Steht sie
+       in einer schmalen Spalte, bleibt ein kleiner Mindesteffekt uebrig.
+       Der Text direkt darunter blendet im selben Zug ein — so ueberlagern sich
+       die grosse Headline und der Fliesstext nie. */
+    /* Breite der laengsten Zeile — nicht die des Kastens. Nur so laesst sich
+       sagen, wie weit die Headline wachsen darf, ohne rechts anzustossen. */
+    const lineWidth = (el) => {
+      const r = document.createRange();
+      r.selectNodeContents(el);
+      const rects = [...r.getClientRects()];
+      return rects.length ? Math.max(...rects.map(x => x.width)) : el.offsetWidth;
+    };
+
+    const heads = $$('h2');
+    const widest = new Map();
+    const measure = () => heads.forEach(h => {
+      gsap.set(h, { scale: 1 });
+      widest.set(h, Math.max(1, lineWidth(h)));
+    });
+    measure();
+    /* Die Webschrift kommt spaeter als das Skript — danach noch einmal messen,
+       sonst rechnet der Zoom mit den Zeilenbreiten der Ersatzschrift. */
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => { measure(); ScrollTrigger.refresh(); });
+    }
+
+    const headStart = (h2) => {
+      const phone = matchMedia('(max-width: 820px)').matches;
+      const wish  = phone ? 1.34 : 1.52;
+      const line  = widest.get(h2) || h2.offsetWidth || 1;
+      const view  = document.documentElement.clientWidth;
+      const par   = h2.parentElement ? h2.parentElement.getBoundingClientRect() : null;
+      const centred = getComputedStyle(h2).textAlign === 'center';
+      /* Platz ab der eigenen linken Kante bis zum Rand des Elternkastens,
+         hoechstens aber bis zum Bildschirmrand. Zentrierte Headlines wachsen
+         nach beiden Seiten, deshalb dort die volle Kastenbreite. */
+      const room = centred
+        ? Math.min(par ? par.width : view, view) - 8
+        : Math.min(par ? par.right : view, view) - h2.getBoundingClientRect().left - 6;
+      return Math.max(1, Math.min(wish, room / line));
+    };
+
+    heads.forEach(h2 => {
+      const trail = h2.nextElementSibling;
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: h2, start: 'top 97%', end: 'top 50%', scrub: .5 },
+        defaults: { ease: 'none' }
+      });
+      tl.fromTo(h2, { scale: () => headStart(h2) }, { scale: 1, invalidateOnRefresh: true }, 0);
+      if (trail && !trail.classList.contains('reveal')) {
+        tl.fromTo(trail, { opacity: 0, y: 16 }, { opacity: 1, y: 0, immediateRender: false }, .5);
+      }
+    });
+
+    let remeasure;
+    addEventListener('resize', () => {
+      clearTimeout(remeasure);
+      remeasure = setTimeout(() => { measure(); ScrollTrigger.refresh(); }, 220);
+    });
+
     /* ---------- Überschriften fahren Wort für Wort herein ---------- */
     $$('h2[data-split]').forEach(h2 => {
       const words = splitWords(h2);
@@ -449,6 +521,55 @@
         gsap.to(el, { rotationY: 0, rotationX: 0, duration: 1.1, ease: 'elastic.out(1,.5)' });
       });
     });
+  }
+
+  /* ----------------------------------------------------------------------
+     Calendly: der Kalender startet erst, wenn der Abschnitt in Sichtweite
+     kommt. So kostet er beim ersten Laden der Seite nichts. Kommt das
+     Skript nicht durch, bleibt der Link darunter als Weg zum Termin.
+     ---------------------------------------------------------------------- */
+  const calBox = $('.wait-cal');
+  if (calBox) {
+    const holder = calBox.querySelector('.calendly-inline-widget');
+    let started = false;
+
+    const watchFrame = () => {
+      const t = setInterval(() => {
+        if (holder.querySelector('iframe')) { calBox.classList.add('is-ready'); clearInterval(t); }
+      }, 200);
+      setTimeout(() => {
+        clearInterval(t);
+        if (!calBox.classList.contains('is-ready')) calBox.classList.add('is-failed');
+      }, 12000);
+    };
+
+    const start = () => {
+      if (started) return;
+      started = true;
+      if (window.Calendly && Calendly.initInlineWidget) {
+        Calendly.initInlineWidget({ url: holder.dataset.url, parentElement: holder });
+        watchFrame();
+      } else {
+        calBox.classList.add('is-failed');
+      }
+    };
+
+    const waitForLib = () => {
+      if (window.Calendly) return start();
+      let tries = 0;
+      const w = setInterval(() => {
+        if (window.Calendly || ++tries > 60) { clearInterval(w); start(); }
+      }, 200);
+    };
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some(e => e.isIntersecting)) { io.disconnect(); waitForLib(); }
+      }, { rootMargin: '700px 0px' });
+      io.observe(calBox);
+    } else {
+      waitForLib();
+    }
   }
 
 })();

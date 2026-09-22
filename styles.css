@@ -31,6 +31,9 @@
 
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
+/* Seitliches Scrollen bleibt auf jeder Breite aus — grosse Headlines und
+   das Laufband duerfen nach rechts herausragen, ohne die Seite zu weiten. */
+html{overflow-x:hidden}
 body{
   background:var(--paper);color:var(--ink-mid);font-family:var(--sans);
   font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;overflow-x:hidden;
@@ -43,8 +46,14 @@ a{color:inherit}
 
 h1,h2,h3,h4{color:var(--ink);font-family:var(--display);font-weight:800;
   letter-spacing:-.03em;text-wrap:balance;font-variation-settings:'wdth' 108}
-h1{font-size:clamp(3rem,8.5vw,6.4rem);line-height:.92;letter-spacing:-.045em}
-h2{font-size:clamp(1.9rem,4vw,2.95rem);line-height:1.02}
+h1{font-size:clamp(3rem,10.4vw,8.2rem);line-height:.9;letter-spacing:-.048em}
+/* fit-content: der Kasten ist genau so breit wie die laengste Zeile. Sonst
+   wuerde der leere Rest beim Vergroessern ueber den Bildschirmrand ragen. */
+h2{font-size:clamp(2.2rem,5.4vw,4.2rem);line-height:.98;max-width:18ch;width:fit-content}
+/* Die Headlines starten beim Hereinscrollen gross und ziehen sich zusammen.
+   Der Ursprung liegt links oben, damit die linke Kante ruhig stehen bleibt. */
+.hero-title-zoom,h2{transform-origin:left top;will-change:transform}
+.cta h2{transform-origin:center top;margin-inline:auto}
 h3{font-size:1.09rem;line-height:1.25;letter-spacing:-.018em}
 h4{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);
   font-variation-settings:'wdth' 88;font-weight:700}
@@ -96,7 +105,7 @@ p{text-wrap:pretty}
 .hero{
   position:relative;max-width:var(--maxw);margin:0 auto;
   padding:clamp(2.5rem,6vw,5rem) var(--gut) clamp(2rem,4vw,3rem);
-  display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(2rem,5vw,4rem);align-items:center
+  display:grid;grid-template-columns:1.38fr .62fr;gap:clamp(2rem,4vw,3.2rem);align-items:center
 }
 .hero-inner{position:relative;min-width:0;z-index:1}
 .eyebrow{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:1.3rem}
@@ -182,13 +191,14 @@ section[id],main[id]{scroll-margin-top:86px}
 /* diagonale Schnittkante, aus der Logo-Geometrie */
 .cut-top{--cut:3.2vw;clip-path:polygon(0 var(--cut),100% 0,100% 100%,0 100%);margin-top:-1px;
   padding-top:clamp(5.5rem,10vw,9rem)}
-.section-head{max-width:54ch;margin-bottom:3.2rem}
-.section-head .sub{margin-top:1rem}
+.section-head{max-width:none;margin-bottom:3.4rem}
+.section-head .sub{margin-top:1.1rem;max-width:54ch}
 
 /* ---------- Ziele ---------- */
 .two-col{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(2rem,5vw,4.5rem);align-items:start}
 .col-sticky{position:sticky;top:6rem}
-.col-sticky .sub{margin:1rem 0 2rem}
+.col-sticky .sub{margin:0 0 2rem}
+#ziele .section-head{margin-bottom:2.6rem}
 .goals{list-style:none;counter-reset:g;border-top:1px solid var(--line-soft)}
 .goals li{counter-increment:g;padding:1.55rem 0 1.55rem 3.2rem;border-bottom:1px solid var(--line-soft);
   position:relative;transition:padding-left .35s var(--ease)}
@@ -335,7 +345,7 @@ section[id],main[id]{scroll-margin-top:86px}
 }
 /* iPad hoch: Kacheln und Vorteile zweispaltig, Hero noch nebeneinander */
 @media (max-width:900px) and (min-width:821px){
-  .hero{grid-template-columns:1.15fr .85fr;gap:2rem}
+  .hero{grid-template-columns:1.2fr .8fr;gap:2rem}
   h1{font-size:clamp(2.6rem,7vw,3.6rem)}
 }
 
@@ -358,18 +368,20 @@ section[id],main[id]{scroll-margin-top:86px}
   /* Hero bleibt auch auf dem Handy zweispaltig: Bild steht neben der Headline,
      Lead, Buttons und Bewertung laufen darunter ueber die volle Breite */
   .hero{
-    grid-template-columns:minmax(0,1fr) minmax(104px,34%);
+    grid-template-columns:minmax(0,1fr) minmax(96px,31%);
     column-gap:clamp(.8rem,3vw,1.6rem);row-gap:0;
     padding-top:1.7rem;align-items:start
   }
   .hero-inner{display:contents}
   .eyebrow{grid-column:1/-1;grid-row:1;margin-bottom:1rem}
-  .hero-title{grid-column:1;grid-row:2;align-self:center}
+  .hero-title-zoom{grid-column:1;grid-row:2;align-self:center}
   .hero-media{grid-column:2;grid-row:2;align-self:center;margin:0;max-width:none}
   .lead{grid-column:1/-1;grid-row:3;margin:1.5rem 0 1.7rem;max-width:none}
   .hero-cta{grid-column:1/-1;grid-row:4}
   .rating{grid-column:1/-1;grid-row:5;justify-self:start;margin-top:1.3rem}
-  h1{font-size:clamp(2.35rem,9.2vw,3.4rem)}
+  h1{font-size:clamp(2.5rem,10.4vw,3.7rem)}
+  /* Kuerzere Zeilen lassen der Zoom-Animation Luft nach rechts */
+  h2{max-width:14ch}
   .nav{flex-wrap:wrap;row-gap:.65rem}
   .nav-links{order:3;width:100%;gap:1.35rem;overflow-x:auto;scrollbar-width:none;font-size:.88rem;padding-bottom:.15rem}
   .nav-links::-webkit-scrollbar{display:none}
@@ -404,8 +416,8 @@ section[id],main[id]{scroll-margin-top:86px}
 /* ==========================================================================
    Interaktives Modul: die Kette
    ========================================================================== */
-.lab-head{max-width:54ch;margin-bottom:2.4rem}
-.lab-head .sub{margin-top:1rem}
+.lab-head{max-width:none;margin-bottom:2.6rem}
+.lab-head .sub{margin-top:1.1rem;max-width:54ch}
 
 .lab-body{
   padding:clamp(1.5rem,3vw,2.4rem);
@@ -580,10 +592,33 @@ html.lenis,html.lenis body{height:auto}
 .wait-body h2{margin-top:1.4rem;margin-bottom:.4rem}
 .wait-body .btn{margin-top:1rem}
 
+/* Kalender an der Bildstelle: Calendly laeuft im iframe, deshalb feste Hoehe */
+.wait-grid.has-cal{grid-template-columns:1.02fr .98fr;align-items:start}
+.wait-cal{
+  position:relative;height:760px;background:var(--paper);
+  border:1px solid var(--line-soft);border-radius:var(--r);
+  overflow:hidden;box-shadow:0 30px 70px -44px rgba(46,46,46,.45)
+}
+.wait-cal .calendly-inline-widget{height:100%}
+.wait-cal iframe{display:block}
+/* Bis das Skript geladen hat, steht hier ein ruhiger Platzhalter statt eines Lochs */
+.wait-cal:not(.is-ready)::after{
+  content:"Kalender wird geladen …";position:absolute;inset:0;display:grid;place-items:center;
+  font-size:.86rem;letter-spacing:.06em;color:var(--ink-soft);background:var(--paper);
+  pointer-events:none
+}
+.wait-cal.is-failed::after{content:"Kalender lässt sich hier nicht laden — nimm den Link darunter"}
+.wait-fallback{font-size:.88rem;color:var(--ink-soft)}
+.wait-fallback a{color:var(--blue-deep);text-decoration:underline;text-underline-offset:3px}
+
 @media (max-width:900px){
   .wait-grid{grid-template-columns:1fr;gap:2rem}
   .wait-media{max-width:340px}
+  /* Auf schmalen Schirmen stapelt Calendly Kalender und Uhrzeiten -> mehr Hoehe */
+  .wait-grid.has-cal{grid-template-columns:1fr}
+  .wait-grid.has-cal .wait-body{order:-1}
+  .wait-cal{height:1020px}
 }
-/* Variante B: Kalender an der Bildstelle */
-.wait-cal{background:var(--paper);border:1px solid var(--line-soft);border-radius:var(--r);
-  overflow:hidden;box-shadow:0 30px 70px -44px rgba(46,46,46,.45)}
+@media (max-width:420px){
+  .wait-cal{height:1080px}
+}
