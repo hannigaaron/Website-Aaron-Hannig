@@ -524,51 +524,23 @@
   }
 
   /* ----------------------------------------------------------------------
-     Calendly: der Kalender startet erst, wenn der Abschnitt in Sichtweite
-     kommt. So kostet er beim ersten Laden der Seite nichts. Kommt das
-     Skript nicht durch, bleibt der Link darunter als Weg zum Termin.
+     Calendly laeuft als eigener iframe — ohne fremdes Skript auf der Seite.
+     Bis er geladen hat, steht im Kasten ein ruhiger Platzhalter; kommt er
+     gar nicht durch, bleibt der Link darunter als Weg zum Termin.
      ---------------------------------------------------------------------- */
   const calBox = $('.wait-cal');
   if (calBox) {
-    const holder = calBox.querySelector('.calendly-inline-widget');
-    let started = false;
-
-    const watchFrame = () => {
-      const t = setInterval(() => {
-        if (holder.querySelector('iframe')) { calBox.classList.add('is-ready'); clearInterval(t); }
-      }, 200);
+    const frame = calBox.querySelector('.wait-frame');
+    const done  = () => calBox.classList.add('is-ready');
+    if (frame) {
+      if (frame.contentWindow && frame.contentWindow.location) { /* noop */ }
+      frame.addEventListener('load', done);
       setTimeout(() => {
-        clearInterval(t);
-        if (!calBox.classList.contains('is-ready')) calBox.classList.add('is-failed');
+        if (!calBox.classList.contains('is-ready')) {
+          calBox.classList.add('is-failed');
+          calBox.closest('.wait-grid')?.classList.add('cal-failed');
+        }
       }, 12000);
-    };
-
-    const start = () => {
-      if (started) return;
-      started = true;
-      if (window.Calendly && Calendly.initInlineWidget) {
-        Calendly.initInlineWidget({ url: holder.dataset.url, parentElement: holder });
-        watchFrame();
-      } else {
-        calBox.classList.add('is-failed');
-      }
-    };
-
-    const waitForLib = () => {
-      if (window.Calendly) return start();
-      let tries = 0;
-      const w = setInterval(() => {
-        if (window.Calendly || ++tries > 60) { clearInterval(w); start(); }
-      }, 200);
-    };
-
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver((entries) => {
-        if (entries.some(e => e.isIntersecting)) { io.disconnect(); waitForLib(); }
-      }, { rootMargin: '700px 0px' });
-      io.observe(calBox);
-    } else {
-      waitForLib();
     }
   }
 

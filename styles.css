@@ -602,8 +602,7 @@ html.lenis,html.lenis body{height:auto}
   border:1px solid var(--line-soft);border-radius:var(--r);
   overflow:hidden;box-shadow:0 30px 70px -44px rgba(46,46,46,.45)
 }
-.wait-cal .calendly-inline-widget{height:100%}
-.wait-cal iframe{display:block}
+.wait-frame{display:block;width:100%;height:100%;border:0}
 /* Bis das Skript geladen hat, steht hier ein ruhiger Platzhalter statt eines Lochs */
 .wait-cal:not(.is-ready)::after{
   content:"Kalender wird geladen …";position:absolute;inset:0;display:grid;place-items:center;
@@ -620,6 +619,10 @@ html.lenis,html.lenis body{height:auto}
   /* Auf schmalen Schirmen stapelt Calendly Kalender und Uhrzeiten -> mehr Hoehe */
   .wait-grid.has-cal{grid-template-columns:1fr}
   .wait-grid.has-cal .wait-body{order:-1}
+  /* Der Ersatzlink stuende hier ueber dem Kalender — er erscheint nur,
+     wenn der Kalender wirklich nicht durchkommt */
+  .wait-grid.has-cal .wait-fallback{display:none}
+  .wait-grid.has-cal.cal-failed .wait-fallback{display:block}
   .wait-cal{height:1020px}
 }
 @media (max-width:420px){
