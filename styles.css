@@ -49,6 +49,8 @@ h1,h2,h3,h4{color:var(--ink);font-family:var(--display);font-weight:800;
 h1{font-size:clamp(3rem,10.4vw,8.2rem);line-height:.9;letter-spacing:-.048em}
 /* fit-content: der Kasten ist genau so breit wie die laengste Zeile. Sonst
    wuerde der leere Rest beim Vergroessern ueber den Bildschirmrand ragen. */
+/* Kasten um jede Headline: haelt den Platz frei, den sie beim Zoom braucht */
+.head-box{position:relative}
 h2{font-size:clamp(2.2rem,5.4vw,4.2rem);line-height:.98;max-width:18ch;width:fit-content}
 /* Die Headlines starten beim Hereinscrollen gross und ziehen sich zusammen.
    Der Ursprung liegt links oben, damit die linke Kante ruhig stehen bleibt. */
@@ -595,34 +597,39 @@ html.lenis,html.lenis body{height:auto}
 .wait-body h2{margin-top:1.4rem;margin-bottom:.4rem}
 .wait-body .btn{margin-top:1rem}
 
-/* Kalender an der Bildstelle: Calendly laeuft im iframe, deshalb feste Hoehe */
+/* Kalender an der Bildstelle: Calendly laeuft im iframe, deshalb feste Hoehe.
+   Bis er geladen ist — und dort, wo fremde Inhalte gesperrt sind — steht an
+   seiner Stelle eine eigene Karte mit dem Weg zum Termin. */
 .wait-grid.has-cal{grid-template-columns:1.02fr .98fr;align-items:start}
 .wait-cal{
   position:relative;height:760px;background:var(--paper);
   border:1px solid var(--line-soft);border-radius:var(--r);
   overflow:hidden;box-shadow:0 30px 70px -44px rgba(46,46,46,.45)
 }
-.wait-frame{display:block;width:100%;height:100%;border:0}
-/* Bis das Skript geladen hat, steht hier ein ruhiger Platzhalter statt eines Lochs */
-.wait-cal:not(.is-ready)::after{
-  content:"Kalender wird geladen …";position:absolute;inset:0;display:grid;place-items:center;
-  font-size:.86rem;letter-spacing:.06em;color:var(--ink-soft);background:var(--paper);
-  pointer-events:none
+.wait-frame{display:block;width:100%;height:100%;border:0;opacity:0;transition:opacity .5s var(--ease)}
+.wait-cal.is-ready .wait-frame{opacity:1}
+
+.cal-card{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:.9rem;text-align:center;padding:2rem 1.6rem;
+  background:linear-gradient(170deg,var(--paper) 42%,var(--paper-alt) 100%)
 }
-.wait-cal.is-failed::after{content:"Kalender lässt sich hier nicht laden — nimm den Link darunter"}
-.wait-fallback{font-size:.88rem;color:var(--ink-soft)}
-.wait-fallback a{color:var(--blue-deep);text-decoration:underline;text-underline-offset:3px}
+.wait-cal.is-ready .cal-card{display:none}
+/* Kommt der Kalender nicht durch, schrumpft der Kasten auf die Karte */
+.wait-cal.is-failed{height:auto}
+.wait-cal.is-failed .cal-card{position:static;padding-block:3.4rem}
+.cal-mark{width:104px;height:auto;margin-bottom:.3rem}
+.cal-kicker{font-family:var(--display);font-weight:800;font-size:clamp(1.3rem,2.4vw,1.8rem);
+  color:var(--ink);letter-spacing:-.02em;line-height:1.1}
+.cal-meta{font-size:.94rem;color:var(--ink-mid)}
+.cal-note{font-size:.84rem;color:var(--ink-soft);max-width:30ch}
 
 @media (max-width:900px){
   .wait-grid{grid-template-columns:1fr;gap:2rem}
   .wait-media{max-width:340px}
-  /* Auf schmalen Schirmen stapelt Calendly Kalender und Uhrzeiten -> mehr Hoehe */
   .wait-grid.has-cal{grid-template-columns:1fr}
   .wait-grid.has-cal .wait-body{order:-1}
-  /* Der Ersatzlink stuende hier ueber dem Kalender — er erscheint nur,
-     wenn der Kalender wirklich nicht durchkommt */
-  .wait-grid.has-cal .wait-fallback{display:none}
-  .wait-grid.has-cal.cal-failed .wait-fallback{display:block}
+  /* Auf schmalen Schirmen stapelt Calendly Kalender und Uhrzeiten -> mehr Hoehe */
   .wait-cal{height:1020px}
 }
 @media (max-width:420px){

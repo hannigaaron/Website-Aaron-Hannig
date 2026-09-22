@@ -14,6 +14,11 @@ Handy 390/430 px, iPad 768 px hoch und 1024 px quer, Desktop 1440 px.
   `@media (pointer:coarse)` — nicht an die Breite, sonst fällt das iPad
   im Querformat durchs Raster.
 - Keine Schrift unter **12 px**.
+- **Kein Text darf sich mit anderem Text überlagern** — auch nicht kurz
+  während einer Animation. Der Zoom auf den Überschriften reserviert seinen
+  Platz vorher im Layout (`.head-box` mit Innenabstand unten), statt sich
+  über den Text darunter zu schieben. Vor dem Fertigmelden wird das mit
+  `scratchpad/overlap.js` auf allen fünf Breiten geprüft.
 - Die Navigation bricht unter 820 px auf zwei Zeilen um; dort braucht
   `scroll-margin-top` den größeren Wert.
 

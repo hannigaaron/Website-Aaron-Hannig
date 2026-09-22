@@ -292,13 +292,10 @@
     }
 
     /* ---------- Jede Abschnitts-Headline startet gross und zieht sich zusammen ----------
-       Der Startwert wird pro Überschrift gedeckelt: sie darf ihren eigenen
-       Kasten ausfuellen, damit kein Wort am Rand abgeschnitten wird. Steht sie
-       in einer schmalen Spalte, bleibt ein kleiner Mindesteffekt uebrig.
-       Der Text direkt darunter blendet im selben Zug ein — so ueberlagern sich
-       die grosse Headline und der Fliesstext nie. */
-    /* Breite der laengsten Zeile — nicht die des Kastens. Nur so laesst sich
-       sagen, wie weit die Headline wachsen darf, ohne rechts anzustossen. */
+       Wichtig: Der Platz, den die vergroesserte Headline braucht, wird vorher
+       im Layout reserviert (Innenabstand unten am Kasten). Dadurch kann sie
+       sich zu keinem Zeitpunkt mit dem Text darunter ueberlagern. Nach rechts
+       begrenzt die laengste Zeile, wie weit sie wachsen darf. */
     const lineWidth = (el) => {
       const r = document.createRange();
       r.selectNodeContents(el);
@@ -307,11 +304,43 @@
     };
 
     const heads = $$('h2');
-    const widest = new Map();
-    const measure = () => heads.forEach(h => {
-      gsap.set(h, { scale: 1 });
-      widest.set(h, Math.max(1, lineWidth(h)));
+
+    /* Jede Headline bekommt einen eigenen Kasten, in dem der Zuwachs Platz hat */
+    heads.forEach(h2 => {
+      if (h2.parentElement && h2.parentElement.classList.contains('head-box')) return;
+      const box = document.createElement('div');
+      box.className = 'head-box';
+      h2.parentElement.insertBefore(box, h2);
+      box.appendChild(h2);
     });
+
+    const startOf = new Map();
+
+    const measure = () => {
+      const phone = matchMedia('(max-width: 820px)').matches;
+      const wish  = phone ? 1.34 : 1.5;
+      const air   = phone ? 52 : 88;   /* so viel Luft darf unter der Headline hoechstens entstehen */
+      const view  = document.documentElement.clientWidth;
+
+      heads.forEach(h2 => {
+        const box = h2.parentElement;
+        gsap.set(h2, { scale: 1 });
+        box.style.paddingBottom = '0px';
+
+        const line = Math.max(1, lineWidth(h2));
+        const high = h2.offsetHeight || 1;
+        const par  = box.parentElement ? box.parentElement.getBoundingClientRect() : null;
+        const centred = getComputedStyle(h2).textAlign === 'center';
+        const room = centred
+          ? Math.min(par ? par.width : view, view) - 8
+          : Math.min(par ? par.right : view, view) - h2.getBoundingClientRect().left - 6;
+
+        const s = Math.max(1, Math.min(wish, room / line, 1 + air / high));
+        startOf.set(h2, s);
+        box.style.paddingBottom = Math.round(high * (s - 1)) + 'px';
+      });
+    };
+
     measure();
     /* Die Webschrift kommt spaeter als das Skript — danach noch einmal messen,
        sonst rechnet der Zoom mit den Zeilenbreiten der Ersatzschrift. */
@@ -319,32 +348,11 @@
       document.fonts.ready.then(() => { measure(); ScrollTrigger.refresh(); });
     }
 
-    const headStart = (h2) => {
-      const phone = matchMedia('(max-width: 820px)').matches;
-      const wish  = phone ? 1.34 : 1.52;
-      const line  = widest.get(h2) || h2.offsetWidth || 1;
-      const view  = document.documentElement.clientWidth;
-      const par   = h2.parentElement ? h2.parentElement.getBoundingClientRect() : null;
-      const centred = getComputedStyle(h2).textAlign === 'center';
-      /* Platz ab der eigenen linken Kante bis zum Rand des Elternkastens,
-         hoechstens aber bis zum Bildschirmrand. Zentrierte Headlines wachsen
-         nach beiden Seiten, deshalb dort die volle Kastenbreite. */
-      const room = centred
-        ? Math.min(par ? par.width : view, view) - 8
-        : Math.min(par ? par.right : view, view) - h2.getBoundingClientRect().left - 6;
-      return Math.max(1, Math.min(wish, room / line));
-    };
-
     heads.forEach(h2 => {
-      const trail = h2.nextElementSibling;
-      const tl = gsap.timeline({
-        scrollTrigger: { trigger: h2, start: 'top 97%', end: 'top 50%', scrub: .5 },
-        defaults: { ease: 'none' }
-      });
-      tl.fromTo(h2, { scale: () => headStart(h2) }, { scale: 1, invalidateOnRefresh: true }, 0);
-      if (trail && !trail.classList.contains('reveal')) {
-        tl.fromTo(trail, { opacity: 0, y: 16 }, { opacity: 1, y: 0, immediateRender: false }, .5);
-      }
+      gsap.fromTo(h2,
+        { scale: () => startOf.get(h2) || 1 },
+        { scale: 1, ease: 'none', invalidateOnRefresh: true,
+          scrollTrigger: { trigger: h2, start: 'top 97%', end: 'top 50%', scrub: .5 } });
     });
 
     let remeasure;
@@ -525,22 +533,45 @@
 
   /* ----------------------------------------------------------------------
      Calendly laeuft als eigener iframe — ohne fremdes Skript auf der Seite.
-     Bis er geladen hat, steht im Kasten ein ruhiger Platzhalter; kommt er
-     gar nicht durch, bleibt der Link darunter als Weg zum Termin.
+     Die eingebettete Seite meldet sich per postMessage; daran erkennen wir,
+     ob sie wirklich durchgekommen ist, und uebernehmen gleich ihre Hoehe.
+     Bleibt die Meldung aus (kein Netz, gesperrte Einbettung), verschwindet
+     der Rahmen und die Karte darunter uebernimmt den Weg zum Termin.
      ---------------------------------------------------------------------- */
   const calBox = $('.wait-cal');
   if (calBox) {
     const frame = calBox.querySelector('.wait-frame');
-    const done  = () => calBox.classList.add('is-ready');
-    if (frame) {
-      if (frame.contentWindow && frame.contentWindow.location) { /* noop */ }
-      frame.addEventListener('load', done);
-      setTimeout(() => {
-        if (!calBox.classList.contains('is-ready')) {
-          calBox.classList.add('is-failed');
-          calBox.closest('.wait-grid')?.classList.add('cal-failed');
-        }
-      }, 12000);
+    let alive = false;
+
+    const onMessage = (e) => {
+      if (typeof e.origin !== 'string' || e.origin.indexOf('calendly.com') === -1) return;
+      const data = e.data || {};
+      if (typeof data.event !== 'string' || data.event.indexOf('calendly.') !== 0) return;
+
+      if (!alive) { alive = true; calBox.classList.add('is-ready'); }
+
+      const h = parseInt(data.payload && data.payload.height, 10);
+      if (h > 400) calBox.style.height = h + 'px';
+    };
+
+    addEventListener('message', onMessage);
+
+    /* Die Frist laeuft erst, wenn der Abschnitt in Sichtweite kommt — vorher
+       laedt der Rahmen ja noch gar nicht. */
+    const giveUpIn = () => setTimeout(() => {
+      if (alive) return;
+      removeEventListener('message', onMessage);
+      frame && frame.remove();
+      calBox.classList.add('is-failed');
+    }, 9000);
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some(e => e.isIntersecting)) { io.disconnect(); giveUpIn(); }
+      }, { rootMargin: '400px 0px' });
+      io.observe(calBox);
+    } else {
+      giveUpIn();
     }
   }
 
