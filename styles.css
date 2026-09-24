@@ -110,6 +110,25 @@ p{text-wrap:pretty}
   display:grid;grid-template-columns:1.38fr .62fr;gap:clamp(2rem,4vw,3.2rem);align-items:center
 }
 .hero-inner{position:relative;min-width:0;z-index:1}
+
+/* Ruhiger Lichtschein in Markenfarbe hinter der Headline. Er atmet langsam,
+   damit die weisse Flaeche beim Oeffnen nicht tot wirkt. */
+.hero::before{
+  content:"";position:absolute;z-index:0;pointer-events:none;
+  left:-18%;top:-12%;width:78%;height:88%;
+  background:radial-gradient(58% 58% at 38% 42%,rgba(147,221,244,.42),rgba(147,221,244,0) 70%);
+  filter:blur(28px);
+  animation:heroGlow 14s ease-in-out infinite alternate
+}
+@keyframes heroGlow{
+  from{transform:translate3d(0,0,0) scale(1);opacity:.85}
+  to{transform:translate3d(4%,3%,0) scale(1.12);opacity:1}
+}
+
+/* Die Akzentlinie faehrt nach der Headline von links ein */
+.hero-title-zoom{display:flex;flex-direction:column;align-items:flex-start;gap:1.1rem}
+.title-rule{display:block;height:4px;width:clamp(72px,13vw,164px);background:var(--blue);
+  border-radius:2px;transform-origin:left center}
 .eyebrow{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:1.3rem}
 
 .hero-title{display:flex;flex-direction:column}
@@ -407,6 +426,8 @@ section[id],main[id]{scroll-margin-top:86px}
   .tile{padding:1.7rem 1.4rem}
 }
 @media (prefers-reduced-motion:reduce){
+  .hero::before{animation:none}
+  .curtain{display:none}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
     transition-duration:.01ms!important}
   .reveal{opacity:1;transform:none}
@@ -503,9 +524,21 @@ html.lenis,html.lenis body{height:auto}
 /* 1 — Hero: laeuft randlos aus dem Raster bis an den Bildschirmrand,
    die linke Kante folgt der Neigung der Bildmarke */
 .hero-media{
+  position:relative;z-index:1;
+  display:grid;align-items:start;
   margin:0;
   margin-right:calc(-1 * (max(0px,(100vw - var(--maxw)) / 2) + var(--gut)));
   align-self:stretch
+}
+.hero-media img{grid-area:1/1}
+/* Beim Laden schiebt sich diese Flaeche vom Foto herunter und gibt es frei.
+   Sie liegt in derselben Rasterzelle wie das Bild, deckt also genau seine
+   Flaeche ab und nicht mehr. */
+.hero-wipe{
+  grid-area:1/1;align-self:stretch;z-index:2;
+  background:var(--blue);pointer-events:none;
+  clip-path:polygon(9% 0,100% 0,100% 100%,0 100%);
+  transform:scaleY(0);transform-origin:bottom
 }
 .hero-media img{
   width:100%;height:auto;max-height:58vh;object-fit:cover;object-position:58% 22%;
@@ -554,6 +587,7 @@ html.lenis,html.lenis body{height:auto}
      Randbreite, deshalb wird er nicht zurueckgesetzt. */
   .hero-media img{max-height:none;aspect-ratio:3/4.1;object-position:56% 16%;
     clip-path:polygon(13% 0,100% 0,100% 100%,0 100%);border-radius:0}
+  .hero-wipe{clip-path:polygon(13% 0,100% 0,100% 100%,0 100%)}
   .coach-media{max-width:260px;justify-self:start}
   .coach-shape{left:-1rem;top:1rem;right:1rem;bottom:-1rem}
   .cta-bg img{height:100%;opacity:.55}
@@ -666,3 +700,21 @@ html.lenis,html.lenis body{height:auto}
 .legal-foot{border-top:1px solid var(--line-soft);padding:2rem var(--gut) 3rem;text-align:center}
 .legal-foot a{margin:0 .7rem;font-size:.9rem;color:var(--ink-mid);
   display:inline-flex;align-items:center;min-height:44px}
+
+
+/* ==========================================================================
+   Auftakt: zwei Flaechen teilen sich entlang der Neigung der Bildmarke
+   ========================================================================== */
+.curtain{position:fixed;inset:0;z-index:200;pointer-events:none}
+.curtain-plate{position:absolute;inset:0;background:var(--ink);will-change:transform}
+.curtain-top{clip-path:polygon(0 0,100% 0,100% 46%,0 62%)}
+.curtain-bot{clip-path:polygon(0 62%,100% 46%,100% 100%,0 100%)}
+.curtain-mark{
+  position:absolute;left:50%;top:40%;translate:-50% -50%;
+  width:min(46vw,250px);height:auto;opacity:0
+}
+.curtain-skip{
+  position:absolute;left:50%;bottom:clamp(1.6rem,5vh,3rem);translate:-50% 0;opacity:0;
+  font-family:var(--display);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.5)
+}

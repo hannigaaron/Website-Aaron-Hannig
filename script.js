@@ -256,30 +256,95 @@
 
   if (hasGSAP) {
 
-    /* ---------- Auftakt: die Headline kommt gross und zieht sich zusammen ---------- */
+    /* ---------- Auftakt ----------------------------------------------------
+       Zwei Flaechen teilen sich entlang derselben Neigung, die auch die
+       Bildmarke, das Hero-Foto und die Abschnittskanten haben. Dahinter faehrt
+       die Headline auf, ein Wischer gibt das Foto frei. Der Schleier wird per
+       Skript eingesetzt: Ohne JavaScript gibt es ihn gar nicht erst, und die
+       Seite ist sofort lesbar. Ein Tippen, Scrollen oder eine Taste
+       ueberspringt ihn.
+       --------------------------------------------------------------------- */
+    const firstVisit = (() => {
+      try {
+        if (sessionStorage.getItem('pca-intro')) return false;
+        sessionStorage.setItem('pca-intro', '1');
+      } catch (e) { /* privates Fenster: dann eben jedes Mal */ }
+      return true;
+    })();
+
+    let curtain = null;
+    if (firstVisit) {
+      curtain = document.createElement('div');
+      curtain.className = 'curtain';
+      curtain.setAttribute('aria-hidden', 'true');
+      curtain.innerHTML =
+        '<div class="curtain-plate curtain-top"></div>' +
+        '<div class="curtain-plate curtain-bot"></div>' +
+        '<img class="curtain-mark" src="logo-mark.png" alt="" width="1136" height="453" />' +
+        '<span class="curtain-skip">Überspringen</span>';
+      document.body.appendChild(curtain);
+    }
+
     const titleLines = $$('.hero-title .line > span');
     const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+    const dropCurtain = () => {
+      curtain && curtain.remove();
+      curtain = null;
+    };
 
     gsap.set('.hero-title', { transformOrigin: '18% 50%' });
     gsap.set(titleLines, { y: 0, yPercent: 108, opacity: 0 });
     gsap.set(['.eyebrow', '.hero .lead', '.hero-cta', '.hero .rating', '.stats'], { opacity: 0, y: 22 });
     gsap.set('.hero-media img', { scale: 1.22, opacity: 0, transformOrigin: '60% 30%' });
+    gsap.set('.hero-wipe', { scaleY: 1 });
+    gsap.set('.title-rule', { scaleX: 0 });
+
+    if (curtain) {
+      intro
+        .fromTo('.curtain-mark',
+          { opacity: 0, scale: .86 },
+          { opacity: 1, scale: 1, duration: .85, ease: 'expo.out' }, 0)
+        .to('.curtain-skip', { opacity: 1, duration: .4 }, .25)
+        .to(['.curtain-mark', '.curtain-skip'], { opacity: 0, duration: .28, ease: 'power2.in' }, .62)
+        .to('.curtain-top', { yPercent: -104, duration: 1.05, ease: 'expo.inOut' }, .74)
+        .to('.curtain-bot', { yPercent: 104, duration: 1.05, ease: 'expo.inOut' }, .78)
+        .add(dropCurtain, 1.5);
+    }
+
+    const t0 = curtain ? .96 : 0;
 
     intro
-      .to(titleLines, { yPercent: 0, opacity: 1, duration: 1.1, stagger: .11, ease: 'expo.out' })
+      .to(titleLines, { yPercent: 0, opacity: 1, duration: 1.1, stagger: .11, ease: 'expo.out' }, t0)
       .from('.hero-title', {
         scale: 1.9, xPercent: 6, yPercent: 8, filter: 'blur(14px)',
         duration: 2.1, ease: 'expo.out'
-      }, 0)
-      .from('.hero-title .accent span', { color: '#2e2e2e', duration: 1.1, ease: 'power2.out' }, .85)
-      .to('.hero-media img', { scale: 1, opacity: 1, duration: 1.8, ease: 'power3.out' }, .3)
-      .to('.eyebrow', { opacity: 1, y: 0, duration: .7 }, .55)
-      .to('.hero .lead', { opacity: 1, y: 0, duration: .7 }, .7)
-      .to('.hero-cta', { opacity: 1, y: 0, duration: .7 }, .82)
+      }, t0)
+      .from('.hero-title .accent span', { color: '#2e2e2e', duration: 1.1, ease: 'power2.out' }, t0 + .85)
+      .to('.title-rule', { scaleX: 1, duration: .9, ease: 'expo.out' }, t0 + .92)
+      .to('.hero-media img', { scale: 1, opacity: 1, duration: 1.8, ease: 'power3.out' }, t0 + .3)
+      .to('.hero-wipe', { scaleY: 0, duration: 1.15, ease: 'expo.inOut' }, t0 + .34)
+      .to('.eyebrow', { opacity: 1, y: 0, duration: .7 }, t0 + .55)
+      .to('.hero .lead', { opacity: 1, y: 0, duration: .7 }, t0 + .7)
+      .to('.hero-cta', { opacity: 1, y: 0, duration: .7 }, t0 + .82)
       .to('.hero .rating', { opacity: 1, y: 0, duration: .7,
-          onStart: () => $('.hero .rating')?.classList.add('is-visible') }, .94)
+          onStart: () => $('.hero .rating')?.classList.add('is-visible') }, t0 + .94)
       .to('.stats', { opacity: 1, y: 0, duration: .7,
-          onStart: () => $('.stats')?.classList.add('is-visible') }, 1.02);
+          onStart: () => $('.stats')?.classList.add('is-visible') }, t0 + 1.02);
+
+    if (curtain) {
+      /* Wer nicht warten will, kommt sofort durch */
+      const skip = () => {
+        ['pointerdown', 'wheel', 'touchstart', 'keydown'].forEach(
+          ev => removeEventListener(ev, skip));
+        intro.progress(Math.max(intro.progress(), .62));
+        dropCurtain();
+      };
+      ['pointerdown', 'wheel', 'touchstart', 'keydown'].forEach(
+        ev => addEventListener(ev, skip, { once: true, passive: true }));
+      /* Notbremse: Der Schleier verschwindet auf jeden Fall */
+      setTimeout(dropCurtain, 4000);
+    }
 
     /* ---------- Die Headline schrumpft beim Scrollen ---------- */
     const heroZoom = $('.hero-title-zoom');

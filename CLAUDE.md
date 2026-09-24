@@ -87,6 +87,23 @@ Die Rechtsseiten sind `impressum.html`, `datenschutz.html` und `agb.html`.
 Offene Stellen darin sind mit `<span class="todo">` markiert und gelb
 hinterlegt, damit sie nicht übersehen werden.
 
+### Auftakt
+Beim ersten Aufruf pro Browser-Tab teilen sich zwei dunkle Flächen entlang der
+Logo-Neigung und geben die Seite frei (`.curtain`, per Skript eingesetzt).
+Regeln dafür:
+
+- Der Schleier wird **nur von JavaScript erzeugt**. Ohne Skript gibt es ihn
+  nicht, und die Seite ist sofort lesbar.
+- Tippen, Scrollen oder eine Taste überspringt ihn; eine Notbremse entfernt
+  ihn nach spätestens 4 Sekunden auf jeden Fall.
+- `sessionStorage` sorgt dafür, dass er pro Tab nur einmal läuft.
+- `prefers-reduced-motion` blendet ihn komplett aus.
+
+Ruhende Zustände gehören ins CSS, animierte ins Skript: `.title-rule` steht
+im CSS sichtbar und wird von GSAP auf 0 gesetzt, `.hero-wipe` steht im CSS
+unsichtbar und wird von GSAP eingeblendet. So bleibt ohne Skript nichts
+unsichtbar hängen.
+
 ## Wichtig: Arbeit sichern
 Der Container ist flüchtig. Committen reicht nicht — ohne Push ist die
 Arbeit beim nächsten Start weg. Der letzte Rettungsanker war das
