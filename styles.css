@@ -270,28 +270,42 @@ section[id],main[id]{scroll-margin-top:86px}
 .panel-body h3{font-size:1.65rem}
 .panel-body>p:last-child{margin-top:.9rem;min-height:4.8em;max-width:70ch}
 
-/* ---------- Stimmen ---------- */
-/* Die Stimmen laufen als Band von rechts nach links. Ohne Skript bleibt die
-   Schiene seitlich scrollbar, damit trotzdem alle Karten erreichbar sind. */
+/* ---------- Stimmen ----------
+   Keine abgerundeten Kaertchen: harte Kanten, eine angeschnittene Ecke oben
+   rechts wie an den Abschnittskanten, und eine kraeftige Kante links in
+   Markenfarbe. Alle Karten sind exakt gleich hoch, damit Ober- und
+   Unterkanten im laufenden Band eine durchgehende Linie bilden. */
 .quote-rail{position:relative;overflow:hidden;
   margin-inline:calc(-1 * var(--gut));padding-inline:var(--gut);
-  padding-block:.7rem 1.6rem;
+  padding-block:.2rem 1.2rem;
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
   mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
 .no-gsap .quote-rail{overflow-x:auto;scrollbar-width:thin}
-.quote-track{display:flex;gap:1.2rem;width:max-content;will-change:transform}
-.quote-track .quote{flex:0 0 auto;width:clamp(248px,25vw,330px)}
-.quote{background:var(--paper-alt);border:1px solid var(--blue-line);border-radius:var(--r);
-  padding:1.9rem 1.5rem 1.5rem;position:relative;display:flex;flex-direction:column;
-  transition:transform .4s var(--ease),box-shadow .3s}
-.quote::before{content:"";position:absolute;top:0;left:1.5rem;width:0;height:0;
-  border-top:14px solid var(--blue);border-left:9px solid transparent;border-right:9px solid transparent}
-.quote:hover{transform:translateY(-5px);box-shadow:0 18px 40px -26px rgba(16,112,141,.6)}
-.quote p{color:var(--ink);font-size:1.02rem;line-height:1.55;flex:1}
-.quote footer{margin-top:1.3rem;padding-top:1rem;border-top:1px solid var(--blue-line);
-  display:flex;align-items:center}
+.quote-track{display:flex;align-items:stretch;gap:1px;width:max-content;will-change:transform}
+
+.quote{
+  --cut:22px;
+  flex:0 0 auto;width:clamp(255px,24vw,320px);height:var(--quote-h,318px);
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:1.7rem 1.5rem 1.5rem;
+  background:var(--paper-alt);border:0;border-radius:0;
+  border-left:4px solid var(--blue-deep);
+  clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,0 100%);
+  transition:background .35s var(--ease)
+}
+.quote:hover{background:#e8f5fb}
+.quote p{color:var(--ink);font-size:1rem;line-height:1.55;margin:0}
+.quote footer{display:flex;align-items:center;gap:.7rem;
+  padding-top:.9rem;border-top:1px solid var(--blue-line)}
+.quote footer::after{content:"Google Rezension";font-family:var(--display);font-weight:700;
+  font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
 .quote footer .q-stars{display:inline-flex;gap:1px}
-.quote footer .q-stars svg{width:12px;height:12px;fill:var(--blue)}
+.quote footer .q-stars svg{width:13px;height:13px;fill:var(--blue-deep)}
+
+@media (max-width:640px){
+  .quote{--quote-h:322px;width:clamp(255px,80vw,300px);padding:1.5rem 1.3rem 1.35rem}
+  .quote p{font-size:.97rem;line-height:1.5}
+}
 
 /* ---------- Split / Coach ---------- */
 .split{display:grid;grid-template-columns:.52fr 1.48fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
