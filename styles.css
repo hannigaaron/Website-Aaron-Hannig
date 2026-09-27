@@ -271,7 +271,16 @@ section[id],main[id]{scroll-margin-top:86px}
 .panel-body>p:last-child{margin-top:.9rem;min-height:4.8em;max-width:70ch}
 
 /* ---------- Stimmen ---------- */
-.quotes{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;align-items:stretch}
+/* Die Stimmen laufen als Band von rechts nach links. Ohne Skript bleibt die
+   Schiene seitlich scrollbar, damit trotzdem alle Karten erreichbar sind. */
+.quote-rail{position:relative;overflow:hidden;
+  margin-inline:calc(-1 * var(--gut));padding-inline:var(--gut);
+  padding-block:.7rem 1.6rem;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+.no-gsap .quote-rail{overflow-x:auto;scrollbar-width:thin}
+.quote-track{display:flex;gap:1.2rem;width:max-content;will-change:transform}
+.quote-track .quote{flex:0 0 auto;width:clamp(248px,25vw,330px)}
 .quote{background:var(--paper-alt);border:1px solid var(--blue-line);border-radius:var(--r);
   padding:1.9rem 1.5rem 1.5rem;position:relative;display:flex;flex-direction:column;
   transition:transform .4s var(--ease),box-shadow .3s}
@@ -359,7 +368,6 @@ section[id],main[id]{scroll-margin-top:86px}
 @media (max-width:980px){
   .two-col,.split{grid-template-columns:1fr}
   .tiles,.perks{grid-template-columns:repeat(2,1fr)}
-  .quotes{grid-template-columns:repeat(2,1fr)}
   .col-sticky{position:static}
   .footer-inner{grid-template-columns:1fr 1fr}
   .footer-brand{grid-column:1/-1}
@@ -420,7 +428,7 @@ section[id],main[id]{scroll-margin-top:86px}
   body{font-size:16px}
   .marquee-track{font-size:.86rem;gap:1.4rem}
   .stats{grid-template-columns:repeat(2,1fr)}
-  .tiles,.perks,.quotes{grid-template-columns:1fr}
+  .tiles,.perks{grid-template-columns:1fr}
   .perk p{min-height:0}
   .footer-inner{grid-template-columns:1fr}
   .tile{padding:1.7rem 1.4rem}
@@ -437,72 +445,61 @@ section[id],main[id]{scroll-margin-top:86px}
 }
 
 /* ==========================================================================
-   Interaktives Modul: die Kette
+   Das Prinzip: ein Jahr, zwei Wege
    ========================================================================== */
 .lab-head{max-width:none;margin-bottom:2.6rem}
 .lab-head .sub{margin-top:1.1rem;max-width:54ch}
-
 .lab-body{
-  padding:clamp(1.5rem,3vw,2.4rem);
-  border:1px solid var(--line-soft);border-radius:var(--r);
-  background:linear-gradient(135deg,var(--blue-wash),transparent 45%),var(--paper)
+  background:linear-gradient(150deg,var(--paper-alt) 0%,var(--paper) 62%);
+  border:1px solid var(--blue-line);border-radius:var(--r);
+  padding:clamp(1.4rem,3.4vw,2.4rem)
 }
 
-/* --- Regler --- */
-.lab-control{margin-bottom:2.2rem}
-.lab-control label{display:block;font-size:.8rem;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--ink-soft);margin-bottom:.8rem}
-.lab-range-row{display:flex;align-items:center;gap:1.2rem}
-/* 44 px hohe Trefferflaeche, die sichtbare Schiene bleibt duenn */
-#lab-range{flex:1;min-width:0;-webkit-appearance:none;appearance:none;height:44px;
-  background-color:transparent;background-repeat:no-repeat;background-position:center;
-  background-size:100% 8px;
-  background-image:linear-gradient(to right,var(--blue) var(--fill,33%),var(--line-soft) var(--fill,33%));
-  cursor:pointer}
-#lab-range::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;
-  background:var(--blue-deep);border:3px solid var(--paper);cursor:grab;
-  box-shadow:0 3px 10px -2px rgba(16,112,141,.6)}
-#lab-range::-moz-range-thumb{width:28px;height:28px;border-radius:50%;background:var(--blue-deep);
-  border:3px solid var(--paper);cursor:grab}
-#lab-range:active::-webkit-slider-thumb{cursor:grabbing}
-#lab-range-out{font-family:var(--display);font-size:2rem;font-weight:800;color:var(--ink);
-  line-height:1;min-width:2ch;text-align:right;font-variant-numeric:tabular-nums}
-
-/* --- die zwei Ketten --- */
-.lab-rows{display:grid;gap:1.6rem}
-.lab-row{padding:1.4rem 1.4rem 1.2rem;border-radius:12px;border:1px solid var(--line-soft);
-  background:var(--paper)}
-.lab-row.is-coach{border-color:var(--blue-line);background:var(--paper-alt)}
-.lab-row-head h3{font-size:1.05rem}
-.lab-row-head p{font-size:.92rem;margin-top:.25rem}
-
-.lab-chain{display:grid;grid-template-columns:repeat(12,1fr);gap:5px;margin:1.1rem 0 .9rem}
-.lab-link{height:42px;border-radius:6px;background:var(--blue);position:relative;
-  transition:background .3s var(--ease),height .3s var(--ease),opacity .3s var(--ease)}
-/* ausgefallen: Lücke in der Kette */
-.lab-link.is-gap{background:transparent;border:1.5px dashed var(--line);
-  background-image:none}
-/* nur kleiner: Kette bleibt geschlossen */
-.lab-link.is-min{background:var(--blue);opacity:.42;height:20px;align-self:center}
-
-.lab-result{font-size:.95rem;color:var(--ink);font-weight:600}
-.lab-result b{font-family:var(--display);font-weight:800;font-variant-numeric:tabular-nums}
-.lab-result .good{color:var(--blue-deep)}
-
-@media (min-width:900px){
-  .lab-rows{grid-template-columns:1fr 1fr;gap:1.4rem}
+/* Schalter: zwei Knoepfe, einer ist an */
+.lab-switch{display:inline-flex;flex-wrap:wrap;gap:.4rem;padding:.35rem;
+  background:var(--paper);border:1px solid var(--line-soft);border-radius:999px}
+.lab-opt{
+  font:inherit;font-family:var(--display);font-weight:700;font-size:.92rem;
+  min-height:44px;padding:.6rem 1.25rem;border:0;border-radius:999px;cursor:pointer;
+  background:transparent;color:var(--ink-mid);transition:background .25s,color .25s
 }
+.lab-opt.is-on{background:var(--blue);color:var(--ink)}
+.lab-opt:focus-visible{outline:2px solid var(--blue-deep);outline-offset:2px}
+
+/* Das Jahr: zwoelf Balken */
+.lab-year{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(4px,1vw,9px);
+  align-items:end;margin:2rem 0 1.5rem}
+.lab-month{display:grid;gap:.5rem;justify-items:center}
+.lab-bar{width:100%;height:clamp(52px,9vw,96px);border-radius:7px;background:var(--blue);
+  transition:height .5s var(--ease),background .5s var(--ease),opacity .5s var(--ease),
+             border-color .5s var(--ease)}
+.lab-m{font-size:.8rem;font-family:var(--display);font-weight:700;color:var(--ink-soft)}
+
+/* Ohne Mindeststandard: die schwierigen Monate fallen ganz aus */
+.lab-year[data-mode="ohne"] .is-hard .lab-bar{
+  background:transparent;border:1.5px dashed var(--line)}
+.lab-year[data-mode="ohne"] .is-hard .lab-m{color:var(--ink-soft);opacity:.55}
+/* Mit Mindeststandard: sie werden kleiner, fallen aber nicht aus */
+.lab-year[data-mode="mit"] .is-hard .lab-bar{
+  height:clamp(22px,3.6vw,38px);background:var(--blue);opacity:.62}
+
+.lab-line{font-size:clamp(1.02rem,2vw,1.3rem);color:var(--ink-mid)}
+.lab-line b{font-family:var(--display);font-weight:800;color:var(--ink);
+  font-variant-numeric:tabular-nums}
+.lab-line b.good{color:var(--blue-deep)}
+
+.lab-note{margin-top:1.6rem;padding-left:1.1rem;border-left:3px solid var(--blue);
+  font-size:.94rem;line-height:1.6;color:var(--ink-mid);max-width:72ch}
+
 @media (max-width:420px){
-  .lab-chain{gap:3px}
-  .lab-link{height:34px;border-radius:4px}
-  .lab-link.is-min{height:16px}
-  #lab-range-out{font-size:1.6rem}
-}
-@media (pointer:coarse){
-  #lab-range{background-size:100% 10px}
+  .lab-year{gap:3px}
+  .lab-bar{border-radius:5px}
+  .lab-m{font-size:.75rem}
+  .lab-switch{width:100%}
+  .lab-opt{flex:1 1 auto;padding-inline:.7rem;font-size:.86rem}
 }
 @media (prefers-reduced-motion:reduce){
-  .lab-link{transition:none}
+  .lab-bar{transition:none}
 }
 
 .quotes-cta{margin-top:1.8rem}

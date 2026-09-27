@@ -6,6 +6,8 @@
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const hasGSAP = !reduced && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
 
+  document.documentElement.classList.add(hasGSAP ? 'js-gsap' : 'no-gsap');
+
   if (hasGSAP) {
     gsap.registerPlugin(ScrollTrigger);
     document.documentElement.classList.add('js-gsap');
@@ -84,37 +86,61 @@
     });
   }
 
-  /* ---------- Interaktiv: die Kette ---------- */
-  const range = $('#lab-range');
-  if (range) {
-    const MONTHS = 12;
-    const out = $('#lab-range-out');
-    const chainA = $('#chain-a'), chainB = $('#chain-b');
-    const resA = $('#res-a'), resB = $('#res-b');
+  /* ---------- Das Prinzip: ein Jahr, zwei Wege ----------
+     Ein Schalter, eine Reihe mit zwoelf Monaten, ein Satz als Ergebnis.
+     In drei Monaten kommt etwas dazwischen. Ohne Mindeststandard fallen sie
+     ganz aus, mit Mindeststandard bleiben sie klein bestehen. */
+  const MONTH_LETTERS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+  const HARD = [2, 6, 9];
 
-    const pick = (n) => {
-      const set = new Set();
-      for (let i = 0; i < n; i++) set.add(Math.round((i + 0.5) * MONTHS / n));
-      return set;
+  const yearBox = $('#lab-year');
+  const yearOut = $('#lab-line');
+
+  if (yearBox && yearOut) {
+    yearBox.innerHTML = MONTH_LETTERS.map((m, i) => `
+      <span class="lab-month${HARD.includes(i) ? ' is-hard' : ''}">
+        <span class="lab-bar"></span>
+        <span class="lab-m">${m}</span>
+      </span>`).join('');
+
+    const paint = (mode) => {
+      yearBox.dataset.mode = mode;
+      yearOut.innerHTML = mode === 'mit'
+        ? '<b class="good">12 von 12 Monaten</b> dran geblieben — auch in den drei schwierigen.'
+        : '<b>9 von 12 Monaten</b> dran geblieben. Drei Monate sind ganz ausgefallen.';
     };
-    const build = (box, cls, hit) => {
-      box.innerHTML = Array.from({ length: MONTHS }, (_, i) =>
-        `<span class="lab-link${hit.has(i + 1) ? ' ' + cls : ''}"></span>`).join('');
-    };
-    const render = () => {
-      const n = Number(range.value), hit = pick(n);
-      out.textContent = n;
-      range.style.setProperty('--fill', (n / MONTHS * 100) + '%');
-      build(chainA, 'is-gap', hit);
-      build(chainB, 'is-min', hit);
-      const aktiv = MONTHS - n;
-      resA.innerHTML = n === 0
-        ? '<b>12</b> von 12 Monaten dabei — solange nichts dazwischenkommt.'
-        : `<b>${aktiv}</b> von 12 Monaten dabei · <b>${n}</b> ${n === 1 ? 'Neuanfang' : 'Neuanfänge'}`;
-      resB.innerHTML = '<b class="good">12</b> von 12 Monaten dabei · <b class="good">0</b> Neuanfänge';
-    };
-    range.addEventListener('input', render);
-    render();
+    paint('ohne');
+
+    $$('.lab-opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $$('.lab-opt').forEach(b => {
+          b.classList.toggle('is-on', b === btn);
+          b.setAttribute('aria-pressed', String(b === btn));
+        });
+        paint(btn.dataset.mode);
+      });
+      btn.setAttribute('aria-pressed', String(btn.classList.contains('is-on')));
+    });
+  }
+
+  /* ---------- Kundenstimmen als Laufband ----------
+     Die Karten haengen zweimal aneinander, damit die Schleife nahtlos ist. */
+  const QUOTES = [
+    'Heute — acht Monate später — bin ich 50 kg leichter und lebe ein komplett anderes Leben.',
+    'Aaron hat mir gezeigt, dass sich Spaß und Durchbeißen nicht ausschließen müssen.',
+    'Alles in allem kann ich jedem nur wünschen und empfehlen, ein Kennenlerngespräch zu vereinbaren.',
+    'Er hat es tatsächlich geschafft, aus mir Couch-Potato einen begeisterten Krafttraining-Fan zu machen.'
+  ];
+  const qTrack = $('#quote-track');
+  if (qTrack) {
+    const stars = Array.from({ length: 5 }, () =>
+      `<svg viewBox="0 0 24 24"><path d="${STAR}"/></svg>`).join('');
+    const row = QUOTES.map(t => `
+      <blockquote class="quote">
+        <p>${t}</p>
+        <footer><span class="q-stars" aria-hidden="true">${stars}</span></footer>
+      </blockquote>`).join('');
+    qTrack.innerHTML = row + row;
   }
 
   /* ======================================================================
@@ -520,6 +546,20 @@
           }, 140);
         }
       });
+    }
+
+    /* ---------- Kundenstimmen laufen von rechts nach links ---------- */
+    if (qTrack) {
+      const qLoop = gsap.to(qTrack, {
+        xPercent: -50, repeat: -1, duration: 46, ease: 'none'
+      });
+      const rail = $('#quote-rail');
+      const hold = () => qLoop.timeScale(0);
+      const go   = () => qLoop.timeScale(1);
+      rail.addEventListener('pointerenter', hold);
+      rail.addEventListener('pointerleave', go);
+      rail.addEventListener('focusin', hold);
+      rail.addEventListener('focusout', go);
     }
 
     // Kacheln und Zitate: zusaetzliche Staffelung.

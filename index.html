@@ -47,9 +47,9 @@
         <span class="title-rule" aria-hidden="true"></span>
       </div>
       <p class="lead reveal">
-        Bereit, etwas zu verändern? Sehr gut. Dann bauen wir etwas auf, das in
-        einem Jahr noch steht — auch in den Wochen, in denen alles andere
-        dazwischenkommt.
+        Bereit, etwas zu verändern? Sehr gut. Denn gemeinsam bauen wir etwas auf,
+        das auch in zwei Jahren noch steht — selbst in den Phasen, in denen
+        alles drunter und drüber läuft.
       </p>
       <div class="hero-cta reveal">
         <a href="https://calendly.com/personalcoach-aaron/dein-kostenloses-erstgesprach" target="_blank" rel="noopener" class="btn btn-lg magnetic">Lass uns was verändern</a>
@@ -106,7 +106,7 @@
     <div class="section-head reveal">
       <p class="kicker">Was du bekommst</p>
       <h2 data-split>Sechs Dinge, auf die du dich verlassen kannst</h2>
-      <p class="sub">Der perfekte Plan ist selten das Problem. Das Problem ist der Dienstagabend, an dem alles anders kommt. Genau dafür ist das hier gebaut.</p>
+      <p class="sub">Der fehlende „perfekte“ Plan ist selten das Problem. Das eigentliche Problem ist die stressige Woche, in der auf einmal alle Vorsätze scheitern, weil alles anders kommt. Genau dafür habe ich mein System konzipiert.</p>
     </div>
     <div class="tiles">
       <article class="tile reveal"><span class="tile-n">01</span><h3>Fester 1:1 Live-Call</h3><p>Jede Woche ein fester Termin mit mir. Wir besprechen die vergangenen Tage, analysieren deine Herausforderungen und deine Fortschritte und legen gemeinsam die nächsten Schritte fest.</p></article>
@@ -153,53 +153,34 @@
     <div class="lab-head reveal">
       <p class="kicker">Das Prinzip</p>
       <h2 data-split>Warum ein Mindeststandard alles verändert</h2>
-      <p class="sub">In wie vielen Monaten im Jahr kommt bei dir etwas dazwischen — Projekt, Urlaub, Krankheit, Familie? Zieh am Regler.</p>
+      <p class="sub">Ein Jahr hat zwölf Monate. In ein paar davon kommt immer etwas dazwischen. Die Frage ist nur, was dann mit deinen Routinen passiert.</p>
     </div>
 
     <div class="lab-body reveal">
-      <div class="lab-control">
-        <label for="lab-range">Monate, in denen etwas dazwischenkommt</label>
-        <div class="lab-range-row">
-          <input type="range" id="lab-range" min="0" max="12" value="4" step="1"
-                 aria-describedby="lab-range-out" />
-          <output id="lab-range-out" for="lab-range">4</output>
-        </div>
+      <div class="lab-switch" role="group" aria-label="Ansicht wechseln">
+        <button type="button" class="lab-opt is-on" data-mode="ohne">Ohne Mindeststandard</button>
+        <button type="button" class="lab-opt" data-mode="mit">Mit Mindeststandard</button>
       </div>
 
-      <div class="lab-rows">
-        <div class="lab-row">
-          <div class="lab-row-head">
-            <h3>Ohne Mindeststandard</h3>
-            <p>Läuft ein Monat nicht nach Plan, fällt er ganz aus — und danach beginnst du wieder von vorn.</p>
-          </div>
-          <div class="lab-chain" id="chain-a" aria-hidden="true"></div>
-          <p class="lab-result" id="res-a"></p>
-        </div>
+      <div class="lab-year" id="lab-year"></div>
 
-        <div class="lab-row is-coach">
-          <div class="lab-row-head">
-            <h3>Mit Mindeststandard</h3>
-            <p>Wir legen vorher fest, was immer geht. Der Monat wird kleiner, fällt aber nicht aus.</p>
-          </div>
-          <div class="lab-chain" id="chain-b" aria-hidden="true"></div>
-          <p class="lab-result" id="res-b"></p>
-        </div>
-      </div>
+      <p class="lab-line" id="lab-line"></p>
+
+      <p class="lab-note">Die festgelegten Mindeststandards in unserer Zusammenarbeit sorgen dafür, dass deine nach und nach aufgebauten, guten Gewohnheiten und Routinen auch in den Phasen weiter am Leben bleiben, in denen du sonst erfahrungsgemäß alles wieder über Bord geworfen hättest.</p>
     </div>
   </section>
 
   <!-- ===== STIMMEN ===== -->
   <section class="section" id="stimmen">
     <div class="section-head reveal"><p class="kicker">Kundenstimmen</p><h2 data-split>Das sagen meine Kunden</h2></div>
-    <div class="quotes">
-      <blockquote class="quote reveal"><p>Heute — acht Monate später — bin ich 50 kg leichter und lebe ein komplett anderes Leben.</p><footer><span class="q-stars" aria-hidden="true"></span></footer></blockquote>
-      <blockquote class="quote reveal"><p>Aaron hat mir gezeigt, dass sich Spaß und Durchbeißen nicht ausschließen müssen.</p><footer><span class="q-stars" aria-hidden="true"></span></footer></blockquote>
-      <blockquote class="quote reveal"><p>Alles in allem kann ich jedem nur wünschen und empfehlen, ein Kennenlerngespräch zu vereinbaren.</p><footer><span class="q-stars" aria-hidden="true"></span></footer></blockquote>
-      <blockquote class="quote reveal"><p>Er hat es tatsächlich geschafft, aus mir Couch-Potato einen begeisterten Krafttraining-Fan zu machen.</p><footer><span class="q-stars" aria-hidden="true"></span></footer></blockquote>
+
+    <div class="quote-rail" id="quote-rail">
+      <div class="quote-track" id="quote-track"></div>
     </div>
+
     <a class="rating rating-wide reveal" href="https://www.google.com/search?q=personal+coach+aaron&amp;si=APenkKm7iecQ4G6P-TsbSMFKIQtv3EFIqRAFw-i8uEbk55Z-_1HJAKaCu-7s0vxSbHilaY_stkGp_h8Fku73sNhi5wH-A8qeJwIAHu96c6RLSzbSE3kk6GQ%3D&amp;uds=AJ5uw19ot_8pmnrWc3HjfIZM6VfDwAiEqXJwW23bvq3-ImcYB1xhl8R3egVuulxiFGLac2w6RVb62G-wjXagGKRVzlVHx8exszKPNavJNcGTMdCuLgq7gHdAZgYfiK2mUj7uU4qjky-I" target="_blank" rel="noopener">
       <span class="stars" aria-hidden="true"></span>
-      <span class="rating-text"><strong>5,0 von 5</strong> auf Google Rezensionen — alle Bewertungen ansehen</span>
+      <span class="rating-text"><strong>5,0 von 5</strong> aus 11 Rezensionen auf Google — alle ansehen</span>
     </a>
     <div class="quotes-cta reveal">
       <a href="https://calendly.com/personalcoach-aaron/dein-kostenloses-erstgesprach" target="_blank" rel="noopener" class="btn btn-lg magnetic">Überzeug dich selbst</a>
