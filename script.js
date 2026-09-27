@@ -127,8 +127,12 @@
      Die Karten haengen zweimal aneinander, damit die Schleife nahtlos ist. */
   const QUOTES = [
     'Heute — acht Monate später — bin ich 50 kg leichter und lebe ein komplett anderes Leben.',
+    'Eigentlich waren nur ein paar Monate geplant, aber es hat so viel Spaß gemacht, dass ich unbedingt weitermachen wollte! 💪',
     'Aaron hat mir gezeigt, dass sich Spaß und Durchbeißen nicht ausschließen müssen.',
+    'Ich habe meine Ernährung komplett umgestellt, Fett abgenommen, Muskeln aufgebaut und bin körperlich wieder richtig fit geworden.',
     'Alles in allem kann ich jedem nur wünschen und empfehlen, ein Kennenlerngespräch zu vereinbaren.',
+    'Aaron ist ein super Personal Trainer! Ich habe mit ihm abgenommen, neue Routinen entwickelt und fühle mich besser denn je. Ich bin ihm für alles sehr dankbar!',
+    'Die Unterstützung war in allen Bereichen super — egal ob beim Training, bei der Ernährung oder in Sachen Motivation.',
     'Er hat es tatsächlich geschafft, aus mir Couch-Potato einen begeisterten Krafttraining-Fan zu machen.'
   ];
   const qTrack = $('#quote-track');
@@ -551,7 +555,7 @@
     /* ---------- Kundenstimmen laufen von rechts nach links ---------- */
     if (qTrack) {
       const qLoop = gsap.to(qTrack, {
-        xPercent: -50, repeat: -1, duration: 46, ease: 'none'
+        xPercent: -50, repeat: -1, duration: 92, ease: 'none'
       });
       const rail = $('#quote-rail');
       const hold = () => qLoop.timeScale(0);
