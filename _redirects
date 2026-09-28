@@ -9,6 +9,6 @@
 /preise         /#coaching          301
 /blog           /                   301
 /blog/*         /                   301
-# Alles Uebrige, was es auf der alten Seite gab, landet auf der Startseite
-# statt auf einer Fehlerseite.
-/*              /                   301
+# Fuer alles Uebrige greift 404.html — Netlify liefert sie automatisch aus.
+# Eine Sammelumleitung /* -> / wird von Netlify verworfen, weil sie fuer die
+# Startseite selbst eine Schleife waere.
