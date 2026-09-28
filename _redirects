@@ -1,0 +1,14 @@
+# Alte Adressen der Wix-Seite auf die neuen Ziele umleiten (Netlify-Format).
+# 301 = dauerhaft, damit Google die Adresse uebernimmt statt beide zu fuehren.
+/impressum      /impressum.html     301
+/datenschutz    /datenschutz.html   301
+/agb            /agb.html           301
+/kontakt        /#kontakt           301
+/ueber-mich     /#coach             301
+/about          /#coach             301
+/preise         /#coaching          301
+/blog           /                   301
+/blog/*         /                   301
+# Alles Uebrige, was es auf der alten Seite gab, landet auf der Startseite
+# statt auf einer Fehlerseite.
+/*              /                   301

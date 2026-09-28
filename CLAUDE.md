@@ -104,6 +104,20 @@ im CSS sichtbar und wird von GSAP auf 0 gesetzt, `.hero-wipe` steht im CSS
 unsichtbar und wird von GSAP eingeblendet. So bleibt ohne Skript nichts
 unsichtbar hängen.
 
+### Vor dem Livegang
+Im Repo liegen die Dateien, die eine echte Domain braucht:
+
+| Datei | Wofür |
+|---|---|
+| `robots.txt` | erlaubt das Indexieren, verweist auf die Sitemap |
+| `sitemap.xml` | eine einzige URL, die Startseite |
+| `_redirects` | leitet die alten Wix-Adressen dauerhaft (301) auf die neuen |
+| `og-image.jpg` | 1200 × 630, das Vorschaubild beim Teilen |
+
+Die Adresse `https://www.personalcoachaaron.de` steht in `og:image`,
+`og:url` und den `canonical`-Angaben. Wird die Domain eine andere, müssen
+diese vier Stellen mitgeändert werden.
+
 ## Wichtig: Arbeit sichern
 Der Container ist flüchtig. Committen reicht nicht — ohne Push ist die
 Arbeit beim nächsten Start weg. Der letzte Rettungsanker war das
