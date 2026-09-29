@@ -376,6 +376,50 @@
       setTimeout(dropCurtain, 4000);
     }
 
+    /* ---------- Das Hero-Foto zieht sich beim Scrollen auf die Headline zusammen ----
+       Beim Oeffnen steht es gross da. Sobald gescrollt wird, schrumpft es auf
+       die Hoehe der Headline, und seine Oberkante wandert auf deren Hoehe.
+       Beide Werte werden im Ruhezustand gemessen statt geraten, damit es auf
+       jeder Fensterhoehe passt.
+
+       Wichtig: fromTo mit immediateRender:false. Sonst uebernimmt der Effekt
+       den Zwischenwert der Ladeanimation (das Foto faehrt dort von 1.22 auf 1)
+       als Startwert — und das Foto wuerde beim Scrollen erst groesser.
+
+       Auf schmalen Schirmen bleibt alles wie es ist; dort steht das Foto
+       ohnehin klein neben der Headline. */
+    const heroImg  = $('.hero-media img');
+    const heroHead = $('.hero-title-zoom');
+    if (heroImg && heroHead && matchMedia('(min-width: 901px)').matches) {
+      let ziel = { scale: 1, y: 0 };
+      const messen = () => {
+        const sc = gsap.getProperty(heroImg, 'scale');
+        const ty = gsap.getProperty(heroImg, 'y');
+        gsap.set(heroImg, { scale: 1, y: 0 });
+        const img  = heroImg.getBoundingClientRect();
+        const head = heroHead.getBoundingClientRect();
+        gsap.set(heroImg, { scale: sc, y: ty });
+        ziel = {
+          scale: gsap.utils.clamp(.5, 1, head.height / img.height),
+          y: Math.max(0, head.top - img.top)
+        };
+      };
+      messen();
+
+      gsap.fromTo(heroImg,
+        { scale: 1, y: 0 },
+        {
+          scale: () => ziel.scale,
+          y: () => ziel.y,
+          ease: 'none', immediateRender: false, invalidateOnRefresh: true,
+          transformOrigin: 'right top',
+          scrollTrigger: {
+            trigger: '.hero', start: 'top top', end: '+=240', scrub: .45,
+            onRefresh: messen
+          }
+        });
+    }
+
     /* ---------- Die Headline schrumpft beim Scrollen ---------- */
     const heroZoom = $('.hero-title-zoom');
     if (heroZoom) {
@@ -512,9 +556,12 @@
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: .6 }
     });
 
-    // Hero-Foto: schiebt sich beim Wegscrollen leicht hoch und zu
+    // Hero-Foto: schiebt sich beim Wegscrollen leicht hoch.
+    // Kein scale hier — das steuert der Effekt weiter oben, der das Foto auf
+    // die Hoehe der Headline zusammenzieht. Zwei Tweens auf derselben
+    // Eigenschaft wuerden sich gegenseitig aufheben.
     gsap.to('.hero-media img', {
-      yPercent: -6, scale: 1.05, ease: 'none',
+      yPercent: -6, ease: 'none',
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: .5 }
     });
 
