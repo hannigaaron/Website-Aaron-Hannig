@@ -84,8 +84,16 @@ externe Ressource ergänzt, legt sie lokal ab oder hängt sie hinter einen
 Klick — und passt `datenschutz.html` an.
 
 Die Rechtsseiten sind `impressum.html`, `datenschutz.html` und `agb.html`.
-Offene Stellen darin sind mit `<span class="todo">` markiert und gelb
-hinterlegt, damit sie nicht übersehen werden.
+Sie sind vollständig ausgefüllt — keine Platzhalter mehr. Wer neue einfügt,
+markiert sie mit `<span class="todo">`; die stehen gelb hinterlegt **im
+ausgelieferten HTML** und sind für Besucher sichtbar, müssen vor dem
+Livegang also restlos verschwinden.
+
+Eingetragen sind: Anschrift Wundensteinstraße 11, 71679 Asperg,
+Kleinunternehmer nach § 19 UStG, Hoster Netlify, Inc. (USA, EU-U.S. DPF),
+Calendly (USA, EU-U.S. DPF), WhatsApp Ireland Ltd. und Zoom für die Calls,
+Mindestlaufzeit vier Monate ohne stillschweigende Verlängerung, Zahlung als
+Gesamtbetrag oder monatliche Raten.
 
 ### Auftakt
 Beim ersten Aufruf pro Browser-Tab teilen sich zwei dunkle Flächen entlang der
