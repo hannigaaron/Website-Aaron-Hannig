@@ -46,9 +46,14 @@ nachgeschärft:
 |---|---|---|
 | `aaron-hero.jpg` | 4:5 | Hero — randlos bis zum rechten Bildschirmrand, linke Kante diagonal |
 | `aaron-portrait.jpg` | 4:5 | Coach — versetzt, mit blauer Fläche dahinter |
-| `aaron-gym.jpg` | 4:5 | Abschluss-CTA — als aufgehellter Hintergrund rechts |
+| `aaron-gym.jpg` | 4:5 | Abschluss-CTA — als aufgehellter Hintergrund rechts, ganze Figur |
 | `aaron-call.jpg` | 6:7 | „Worauf wartest du?" — offene Arme |
 | `aaron-point.jpg` | 6:7 | liegt bereit; zeigt mit dem Finger, als Alternative zu `aaron-call.jpg` |
+
+`aaron-hero.jpg` und `aaron-gym.jpg` stammen aus dem Studio-Shooting im
+blauen Shirt — dort gibt es keine orange Laufbahn, die Farbkorrektur entfaellt,
+nur nachgeschaerft wird. Im Abschluss-CTA steht das Foto auf `height:100%`,
+damit der Kopf nicht oben abgeschnitten wird.
 
 Jedes Foto bekommt eine andere Behandlung. Dreimal derselbe abgerundete
 Kasten neben Text sieht nach Vorlage aus. Ablauf und Ziele haben bewusst

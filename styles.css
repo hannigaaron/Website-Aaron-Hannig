@@ -573,7 +573,7 @@ html.lenis,html.lenis body{height:auto}
 .cta{position:relative;overflow:hidden}
 .cta-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
 .cta-bg img{
-  position:absolute;right:0;bottom:0;height:118%;width:auto;max-width:none;
+  position:absolute;right:0;bottom:0;height:100%;width:auto;max-width:none;
   object-fit:cover;opacity:.9;
   -webkit-mask-image:linear-gradient(100deg,transparent 12%,#000 62%);
   mask-image:linear-gradient(100deg,transparent 12%,#000 62%);
