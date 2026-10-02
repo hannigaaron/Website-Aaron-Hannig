@@ -9,6 +9,12 @@
 /preise         /#coaching          301
 /blog           /                   301
 /blog/*         /                   301
+
+# Kurze Adresse fuer die Infobroschuere, damit sie sich per DM verschicken
+# laesst. 200 = die Datei wird unter dieser Adresse direkt ausgeliefert.
+/broschuere.pdf /broschuere/Infobroschuere-Personal-Coach-Aaron.pdf 200
+/broschuere     /broschuere/Infobroschuere-Personal-Coach-Aaron.pdf 200
+
 # Fuer alles Uebrige greift 404.html — Netlify liefert sie automatisch aus.
 # Eine Sammelumleitung /* -> / wird von Netlify verworfen, weil sie fuer die
 # Startseite selbst eine Schleife waere.
