@@ -37,37 +37,50 @@ body{
 @media print{.page{margin:0}.page+.page{page-break-before:always}}
 
 /* ---------- Kopf ---------- */
-.top{display:flex;align-items:center;justify-content:space-between;padding:13mm 16mm 0}
+.top{display:flex;align-items:center;justify-content:space-between;padding:11mm 16mm 0}
 .top .mark{display:flex;align-items:center;gap:3.5mm}
 .top img{height:9mm;width:auto}
 .wordmark{font-family:var(--display);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:7.6pt;color:var(--ink)}
 .top .right{font-size:7.6pt;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft)}
 
 /* ---------- Titel ---------- */
-.hero{padding:13mm 16mm 0;display:grid;grid-template-columns:1fr 64mm;gap:10mm;align-items:start}
+.hero{padding:10mm 16mm 0;display:grid;grid-template-columns:1fr 64mm;gap:10mm;align-items:start}
 .eyebrow{font-size:7.6pt;letter-spacing:.17em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:5mm}
 h1{font-family:var(--display);font-weight:800;color:var(--ink);font-size:36pt;line-height:.96;letter-spacing:-.025em}
 h1 .accent{color:var(--blue-deep)}
 .rule{display:block;width:28mm;height:1.4mm;background:var(--blue);margin:6mm 0}
 .lead{font-size:10.5pt;line-height:1.5;max-width:82mm}
-.hero-photo{width:64mm;height:80mm;object-fit:cover;object-position:50% 18%;clip-path:polygon(11% 0,100% 0,100% 100%,0 100%)}
+.hero-photo{width:64mm;height:64mm;object-fit:cover;object-position:50% 18%;clip-path:polygon(11% 0,100% 0,100% 100%,0 100%)}
 
 /* ---------- Abschnitte ---------- */
-.sec{padding:0 16mm;margin-top:8.5mm}
+.sec{padding:0 16mm;margin-top:7mm}
 .kicker{font-family:var(--display);font-size:7.2pt;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--blue-deep);margin-bottom:2.4mm}
 h2{font-family:var(--display);font-weight:800;color:var(--ink);font-size:17pt;line-height:1.08;letter-spacing:-.02em;margin-bottom:4.5mm}
 h3{font-family:var(--display);font-weight:700;color:var(--ink);font-size:10pt;line-height:1.2;margin-bottom:1.6mm}
 
 /* Ziele */
-.goals{display:grid;grid-template-columns:1fr 1fr;gap:4mm 10mm;list-style:none}
+.goals{display:grid;grid-template-columns:1fr 1fr;gap:3.4mm 10mm;list-style:none}
 .goals li{position:relative;padding-left:6mm;font-size:9.3pt;line-height:1.4;color:var(--ink)}
 .goals li::before{content:"";position:absolute;left:0;top:1.9mm;width:2.8mm;height:2.8mm;background:var(--blue);clip-path:polygon(0 0,100% 50%,0 100%)}
 
 /* Sechs Kacheln */
 .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}
-.tile{border-left:1mm solid var(--blue);background:var(--paper-alt);padding:4.5mm 4.5mm 5mm}
+.tile{border-left:1mm solid var(--blue);background:var(--paper-alt);padding:4mm 4mm 4.5mm}
 .tile .n{font-family:var(--display);font-weight:800;font-size:7.8pt;color:var(--blue-deep);display:block;margin-bottom:1.8mm;letter-spacing:.08em}
 .tile p{font-size:8.6pt;line-height:1.42}
+
+/* App-Band am Fuss von Seite 1 */
+.appband{
+  position:absolute;left:0;right:0;bottom:0;height:59mm;overflow:hidden;
+  background:var(--paper-alt);clip-path:polygon(0 8mm,100% 0,100% 100%,0 100%);
+}
+.appband-inner{position:relative;padding:10mm 16mm 0}
+.appband h2{font-size:15pt;margin-bottom:2.8mm}
+.applist{display:grid;grid-template-columns:repeat(4,1fr);gap:5mm;margin-bottom:2.8mm}
+.applist div{font-size:8.5pt;line-height:1.38}
+.applist b{display:block;font-family:var(--display);color:var(--ink);font-size:9pt;margin-bottom:.9mm}
+.appnote{font-size:8.5pt;line-height:1.4;max-width:168mm}
+.appnote b{color:var(--ink)}
 
 /* Phasen */
 .phases{display:grid;grid-template-columns:repeat(4,1fr);gap:5mm}
@@ -154,6 +167,23 @@ h3{font-family:var(--display);font-weight:700;color:var(--ink);font-size:10pt;li
       <article class="tile"><span class="n">04</span><h3>Routinen &amp; Gewohnheiten</h3><p>Schritt für Schritt aufgebaut, bis sie sich nicht mehr nach Disziplin anfühlen.</p></article>
       <article class="tile"><span class="n">05</span><h3>Mindeststandards</h3><p>Für Wochen, in denen nichts läuft, steht ein Minimum, das immer geht.</p></article>
       <article class="tile"><span class="n">06</span><h3>Reflexion &amp; Check-ins</h3><p>Journaling und Fragebögen zeigen dir schwarz auf weiß, wo du stehst.</p></article>
+    </div>
+  </div>
+
+  <div class="appband">
+    <div class="appband-inner">
+      <p class="kicker">Dein zentraler Ort</p>
+      <h2>Alles läuft kompakt über meine App</h2>
+      <div class="applist">
+        <div><b>Chat mit mir</b>Fragen und Zwischenstände direkt in der App.</div>
+        <div><b>Ernährungstracking</b>Mit KI-Fotofunktion: Mahlzeit fotografieren, fertig.</div>
+        <div><b>Videoanalysen</b>Du nimmst dich auf, ich schaue mir die Ausführung an.</div>
+        <div><b>Alles an einem Ort</b>Pläne, Check-ins und Fortschritt — kein Zettelchaos.</div>
+      </div>
+      <p class="appnote">
+        <b>Dazu ganz unkompliziert:</b> Die Calls laufen per WhatsApp-Videoanruf oder Zoom — und
+        zusätzlich zur App bin ich auch per WhatsApp für dich erreichbar.
+      </p>
     </div>
   </div>
 </section>
