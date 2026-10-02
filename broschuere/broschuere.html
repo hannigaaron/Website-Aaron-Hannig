@@ -2,12 +2,14 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<title>Personal Coach Aaron — 1:1 Online Coaching · Infobroschüre</title>
+<title>Personal Coach Aaron — 1:1 Online Coaching</title>
 <link rel="stylesheet" href="../fonts/fonts.css" />
 <style>
 /* ==========================================================================
-   Infobroschuere — zwei Seiten A4, Gestaltung aus der Website uebernommen.
-   Farben, Schriften und Formensprache kommen unveraendert aus styles.css.
+   Infobroschuere — zwei Seiten A4.
+   Farben, Schriften und Formensprache unveraendert aus styles.css.
+   Keine Fusszeile, keine Anschrift: der Weg nach draussen ist der
+   Calendly-Link am Ende von Seite 2.
    ========================================================================== */
 :root{
   --paper:#ffffff;
@@ -26,158 +28,84 @@
 html,body{background:#e9eef1}
 body{
   font-family:var(--sans);color:var(--ink-mid);
-  font-size:9.3pt;line-height:1.5;
+  font-size:9.5pt;line-height:1.5;
   -webkit-font-smoothing:antialiased;
   -webkit-print-color-adjust:exact;print-color-adjust:exact;
 }
 @page{size:A4;margin:0}
-
-.page{
-  position:relative;width:210mm;height:297mm;overflow:hidden;
-  background:var(--paper);margin:0 auto 8mm;
-}
-@media print{.page{margin:0;box-shadow:none}.page+.page{page-break-before:always}}
+.page{position:relative;width:210mm;height:297mm;overflow:hidden;background:var(--paper);margin:0 auto 8mm}
+@media print{.page{margin:0}.page+.page{page-break-before:always}}
 
 /* ---------- Kopf ---------- */
-.top{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:11mm 14mm 0;
-}
+.top{display:flex;align-items:center;justify-content:space-between;padding:13mm 16mm 0}
+.top .mark{display:flex;align-items:center;gap:3.5mm}
 .top img{height:9mm;width:auto}
-.top .wordmark{
-  font-family:var(--display);font-weight:700;letter-spacing:.14em;
-  text-transform:uppercase;font-size:7.4pt;color:var(--ink);
-}
-.top .right{font-size:7.4pt;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.wordmark{font-family:var(--display);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:7.6pt;color:var(--ink)}
+.top .right{font-size:7.6pt;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft)}
 
-/* ---------- Titelblock Seite 1 ---------- */
-.hero{position:relative;padding:8mm 14mm 0;display:grid;grid-template-columns:1fr 62mm;gap:8mm;align-items:start}
-.eyebrow{font-size:7.4pt;letter-spacing:.17em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4mm}
-h1{
-  font-family:var(--display);font-weight:800;color:var(--ink);
-  font-size:33pt;line-height:.97;letter-spacing:-.025em;
-}
+/* ---------- Titel ---------- */
+.hero{padding:13mm 16mm 0;display:grid;grid-template-columns:1fr 64mm;gap:10mm;align-items:start}
+.eyebrow{font-size:7.6pt;letter-spacing:.17em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:5mm}
+h1{font-family:var(--display);font-weight:800;color:var(--ink);font-size:36pt;line-height:.96;letter-spacing:-.025em}
 h1 .accent{color:var(--blue-deep)}
-.rule{display:block;width:26mm;height:1.3mm;background:var(--blue);margin:5mm 0 5mm}
-.lead{font-size:10pt;line-height:1.5;color:var(--ink-mid);max-width:88mm}
-.hero-photo{
-  width:62mm;height:76mm;object-fit:cover;object-position:50% 18%;
-  clip-path:polygon(11% 0,100% 0,100% 100%,0 100%);
-}
+.rule{display:block;width:28mm;height:1.4mm;background:var(--blue);margin:6mm 0}
+.lead{font-size:10.5pt;line-height:1.5;max-width:82mm}
+.hero-photo{width:64mm;height:80mm;object-fit:cover;object-position:50% 18%;clip-path:polygon(11% 0,100% 0,100% 100%,0 100%)}
 
 /* ---------- Abschnitte ---------- */
-.sec{padding:0 14mm;margin-top:5.8mm}
-.kicker{
-  font-family:var(--display);font-size:7pt;font-weight:700;letter-spacing:.17em;
-  text-transform:uppercase;color:var(--blue-deep);margin-bottom:2mm;
-}
-h2{
-  font-family:var(--display);font-weight:800;color:var(--ink);
-  font-size:16pt;line-height:1.08;letter-spacing:-.02em;margin-bottom:4mm;
-}
-h3{
-  font-family:var(--display);font-weight:700;color:var(--ink);
-  font-size:9.6pt;line-height:1.22;letter-spacing:-.005em;margin-bottom:1.3mm;
-}
+.sec{padding:0 16mm;margin-top:8.5mm}
+.kicker{font-family:var(--display);font-size:7.2pt;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--blue-deep);margin-bottom:2.4mm}
+h2{font-family:var(--display);font-weight:800;color:var(--ink);font-size:17pt;line-height:1.08;letter-spacing:-.02em;margin-bottom:4.5mm}
+h3{font-family:var(--display);font-weight:700;color:var(--ink);font-size:10pt;line-height:1.2;margin-bottom:1.6mm}
+
+/* Ziele */
+.goals{display:grid;grid-template-columns:1fr 1fr;gap:4mm 10mm;list-style:none}
+.goals li{position:relative;padding-left:6mm;font-size:9.3pt;line-height:1.4;color:var(--ink)}
+.goals li::before{content:"";position:absolute;left:0;top:1.9mm;width:2.8mm;height:2.8mm;background:var(--blue);clip-path:polygon(0 0,100% 50%,0 100%)}
 
 /* Sechs Kacheln */
-.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm}
-.tile{
-  border:.3mm solid var(--line);border-left:1mm solid var(--blue);
-  background:var(--paper-alt);padding:4mm 4mm 4.5mm;
-}
-.tile .n{
-  font-family:var(--display);font-weight:800;font-size:7.6pt;
-  color:var(--blue-deep);display:block;margin-bottom:1.6mm;letter-spacing:.08em;
-}
-.tile p{font-size:8.3pt;line-height:1.45}
-
-/* Ziele als zwei Spalten */
-.goals{display:grid;grid-template-columns:1fr 1fr;gap:2.6mm 7mm;list-style:none}
-.goals li{position:relative;padding-left:5.5mm;font-size:8.6pt;line-height:1.45}
-.goals li::before{
-  content:"";position:absolute;left:0;top:1.6mm;width:2.6mm;height:2.6mm;
-  background:var(--blue);clip-path:polygon(0 0,100% 50%,0 100%);
-}
-.goals b{color:var(--ink);font-weight:600}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}
+.tile{border-left:1mm solid var(--blue);background:var(--paper-alt);padding:4.5mm 4.5mm 5mm}
+.tile .n{font-family:var(--display);font-weight:800;font-size:7.8pt;color:var(--blue-deep);display:block;margin-bottom:1.8mm;letter-spacing:.08em}
+.tile p{font-size:8.6pt;line-height:1.42}
 
 /* Phasen */
-.phases{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm}
-.phase{border-top:1mm solid var(--blue);padding-top:3mm}
-.phase .n{font-family:var(--display);font-weight:800;font-size:7pt;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-deep);display:block;margin-bottom:1.2mm}
-.phase p{font-size:8.1pt;line-height:1.42}
+.phases{display:grid;grid-template-columns:repeat(4,1fr);gap:5mm}
+.phase{border-top:1mm solid var(--blue);padding-top:3.4mm}
+.phase .n{font-family:var(--display);font-weight:800;font-size:7.2pt;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-deep);display:block;margin-bottom:1.4mm}
+.phase p{font-size:8.5pt;line-height:1.4}
 
-/* Vorteile */
-.perks{display:grid;grid-template-columns:repeat(4,1fr);gap:5mm}
-.perks p{font-size:8.2pt;line-height:1.42}
-
-/* Zitate */
-.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm}
-.quote{
-  background:var(--paper-alt);border-left:1mm solid var(--blue-deep);
-  padding:4mm;font-size:8.3pt;line-height:1.46;color:var(--ink);
-  clip-path:polygon(0 0,calc(100% - 4mm) 0,100% 4mm,100% 100%,0 100%);
-}
-.quote .stars{display:block;margin-top:2.5mm;letter-spacing:.06em;color:var(--blue-deep);font-size:8pt}
-.rating{
-  margin-top:3.5mm;font-size:8.2pt;color:var(--ink-mid);
-  border:.3mm solid var(--line);display:inline-block;padding:2mm 4mm;
-}
-.rating b{color:var(--ink)}
-
-/* Merkzeile unter den Phasen */
-.note{
-  margin-top:4.5mm;background:var(--blue-wash);border-left:1mm solid var(--blue-deep);
-  padding:3.2mm 4mm;font-size:8.3pt;line-height:1.45;
-}
+/* Merkzeile */
+.note{margin-top:4.5mm;background:var(--blue-wash);border-left:1mm solid var(--blue-deep);padding:4mm 5mm;font-size:8.8pt;line-height:1.45}
 .note b{color:var(--ink)}
 
-/* Preis-Kasten */
-.price{
-  margin-top:0;background:var(--paper-alt);border:.3mm solid var(--line);
-  padding:3.4mm 5mm 3.8mm;position:relative;
-  clip-path:polygon(0 0,calc(100% - 7mm) 0,100% 7mm,100% 100%,0 100%);
-}
-.price .kicker{margin-bottom:1.4mm}
-.price h2{font-size:12.6pt;margin-bottom:2mm}
-.price p{font-size:8.3pt;line-height:1.45;max-width:150mm}
-.price p+p{margin-top:2mm}
+/* Zitate */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}
+.quote{background:var(--paper-alt);border-left:1mm solid var(--blue-deep);padding:4mm;font-size:8.8pt;line-height:1.45;color:var(--ink);clip-path:polygon(0 0,calc(100% - 4mm) 0,100% 4mm,100% 100%,0 100%)}
+.quote .stars{display:block;margin-top:3mm;color:var(--blue-deep);letter-spacing:.08em;font-size:8.4pt}
+.rating{margin-top:2.5mm;display:inline-block;font-size:8.6pt;border:.3mm solid var(--line);padding:2.2mm 4.5mm}
+.rating b{color:var(--ink)}
+
+/* Preis */
+.price{background:var(--paper-alt);padding:4.5mm 5.5mm 5mm;clip-path:polygon(0 0,calc(100% - 7mm) 0,100% 7mm,100% 100%,0 100%)}
+.price h2{font-size:13pt;margin-bottom:2.4mm}
+.price p{font-size:9pt;line-height:1.48;max-width:166mm}
+.price b{color:var(--ink)}
 
 /* Abschluss */
-.close{
-  position:absolute;left:0;right:0;bottom:0;height:81mm;overflow:hidden;
-  background:var(--paper-alt);
-  clip-path:polygon(0 9mm,100% 0,100% 100%,0 100%);
-}
-.close-photo{
-  position:absolute;right:0;bottom:0;height:100%;width:auto;
-  -webkit-mask-image:linear-gradient(100deg,transparent 14%,#000 64%);
-  mask-image:linear-gradient(100deg,transparent 14%,#000 64%);
-}
-.close-veil{
-  position:absolute;inset:0;
-  background:linear-gradient(95deg,var(--paper-alt) 46%,rgba(241,248,251,.86) 62%,rgba(241,248,251,.3) 100%);
-}
-.close-inner{position:relative;padding:12mm 14mm 0}
-.close-inner h2{font-size:19pt;margin-bottom:3mm}
-.close-inner p{font-size:9pt;max-width:104mm}
-.steps{display:flex;gap:6mm;margin-top:4mm}
-.step{font-size:8pt;line-height:1.4;max-width:40mm}
-.step b{display:block;font-family:var(--display);color:var(--ink);font-size:8.6pt;margin-bottom:.8mm}
-.step .i{
-  display:inline-block;font-family:var(--display);font-weight:800;font-size:7pt;
-  color:var(--blue-deep);letter-spacing:.1em;margin-bottom:1.2mm;
-}
-
-/* Fusszeile */
-.foot{
-  position:absolute;left:14mm;right:14mm;bottom:9mm;
-  display:flex;justify-content:space-between;align-items:flex-end;
-  font-size:7.6pt;color:var(--ink-mid);
-}
-.foot a{color:var(--ink);text-decoration:none}
-.foot .lbl{display:block;font-size:6.6pt;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:.8mm}
-.foot-line{position:absolute;left:14mm;right:14mm;bottom:17mm;height:.3mm;background:var(--line)}
+.close{position:absolute;left:0;right:0;bottom:0;height:86mm;overflow:hidden;background:var(--paper-alt);clip-path:polygon(0 10mm,100% 0,100% 100%,0 100%)}
+.close-photo{position:absolute;right:0;bottom:0;height:100%;width:auto;
+  -webkit-mask-image:linear-gradient(100deg,transparent 16%,#000 66%);
+  mask-image:linear-gradient(100deg,transparent 16%,#000 66%)}
+.close-veil{position:absolute;inset:0;background:linear-gradient(95deg,var(--paper-alt) 48%,rgba(241,248,251,.88) 64%,rgba(241,248,251,.3) 100%)}
+.close-inner{position:relative;padding:15mm 16mm 0}
+.close-inner h2{font-size:21pt;margin-bottom:4mm}
+.close-inner p{font-size:9.5pt;max-width:102mm}
+.cta{display:block;margin-top:5.5mm;width:102mm;text-decoration:none;background:var(--blue);padding:4.5mm 6mm;color:var(--ink)}
+.cta .big{display:block;font-family:var(--display);font-weight:800;font-size:12pt;line-height:1.1;letter-spacing:-.01em}
+.cta .url{display:block;margin-top:1.6mm;font-size:7.6pt;color:#0d5a72;word-break:break-all}
+.contact{margin-top:4mm;font-size:8.4pt;color:var(--ink-mid)}
+.contact a{color:var(--ink);text-decoration:none}
 </style>
 </head>
 <body>
@@ -185,7 +113,7 @@ h3{
 <!-- ======================= SEITE 1 ======================= -->
 <section class="page">
   <div class="top">
-    <div style="display:flex;align-items:center;gap:3.5mm">
+    <div class="mark">
       <img src="../logo-mark.png" alt="" />
       <span class="wordmark">Personal Coach Aaron</span>
     </div>
@@ -198,9 +126,8 @@ h3{
       <h1>Lösungen statt<br /><span class="accent">Ausreden.</span></h1>
       <span class="rule"></span>
       <p class="lead">
-        Bereit, etwas zu verändern? Sehr gut. Denn gemeinsam bauen wir etwas auf,
-        das auch in zwei Jahren noch steht — selbst in den Phasen, in denen alles
-        drunter und drüber läuft.
+        Gemeinsam bauen wir etwas auf, das auch in zwei Jahren noch steht —
+        selbst in den Phasen, in denen alles drunter und drüber läuft.
       </p>
     </div>
     <img class="hero-photo" src="../img/aaron-hero.jpg" alt="Aaron Hannig" />
@@ -210,12 +137,10 @@ h3{
     <p class="kicker">Dabei helfe ich dir</p>
     <h2>Das hier ist das Ziel</h2>
     <ul class="goals">
-      <li><b>Muskelaufbau, Fettverlust, Beweglichkeit</b> — erreicht über einen Weg, der sich in deine Woche einfügt statt sie zu sprengen.</li>
-      <li><b>Gewohnheiten, Struktur, Ernährung</b> — der eigentliche Kern der Arbeit: Systeme, die tragen, wenn die Motivation es nicht tut.</li>
-      <li><b>Wohlfühlen im eigenen Körper</b> — der Punkt, den die Waage nicht misst und der am Ende am meisten zählt.</li>
-      <li><b>Mehr Energie und Leistungsfähigkeit</b> — ein klarer Kopf im Job, und abends noch genug übrig für alles andere.</li>
-      <li><b>Aktiverer, bewussterer Lebensstil</b> — weg von Entweder-oder, hin zu Entscheidungen, die du bewusst triffst.</li>
-      <li><b>Veränderungen, die bleiben</b> — nicht die perfekte Woche, sondern das, was auch nach dem Coaching noch steht.</li>
+      <li>Muskelaufbau, Fettverlust, Beweglichkeit</li>
+      <li>Gewohnheiten, Struktur und ein Ernährungssystem, das hält</li>
+      <li>Wohlfühlen im eigenen Körper</li>
+      <li>Mehr Energie und Leistungsfähigkeit im Alltag</li>
     </ul>
   </div>
 
@@ -223,45 +148,39 @@ h3{
     <p class="kicker">Was du bekommst</p>
     <h2>Sechs Dinge, auf die du dich verlassen kannst</h2>
     <div class="tiles">
-      <article class="tile"><span class="n">01</span><h3>Fester 1:1 Live-Call</h3><p>Jede Woche ein fester Termin mit mir. Wir besprechen die vergangenen Tage, analysieren Herausforderungen und Fortschritte und legen die nächsten Schritte fest.</p></article>
-      <article class="tile"><span class="n">02</span><h3>Durchgehend erreichbar</h3><p>Zwischen den Calls bin ich ansprechbar. Spontane Geschäftsreise, Restaurantkarte, eine Frage, die nicht warten soll — schreib mir, du bekommst eine Antwort.</p></article>
-      <article class="tile"><span class="n">03</span><h3>Dauerhaftes Ernährungssystem</h3><p>Keine Diät mit Enddatum, keine Verbotsliste. Ein System, das du verstehst und das mit Kantine, Kundenessen und Familie funktioniert.</p></article>
-      <article class="tile"><span class="n">04</span><h3>Routinen &amp; Gewohnheiten</h3><p>Schritt für Schritt bauen wir Gewohnheiten auf, die sich irgendwann nicht mehr nach Disziplin anfühlen, sondern einfach dazugehören.</p></article>
-      <article class="tile"><span class="n">05</span><h3>Analyse, Lösungen, Mindeststandards</h3><p>Wenn etwas klemmt, suchen wir die Ursache statt den Schuldigen. Und für Wochen, in denen nichts läuft, steht ein Minimum, das immer geht.</p></article>
-      <article class="tile"><span class="n">06</span><h3>Reflexion &amp; Check-ins</h3><p>Wöchentliches Journaling und Fragebögen halten fest, wo du stehst. So siehst du Fortschritt auch dann, wenn es sich gerade nicht danach anfühlt.</p></article>
+      <article class="tile"><span class="n">01</span><h3>Fester 1:1 Live-Call</h3><p>Jede Woche ein fester Termin: Rückblick, Analyse, nächste Schritte.</p></article>
+      <article class="tile"><span class="n">02</span><h3>Durchgehend erreichbar</h3><p>Auch zwischen den Calls. Du schreibst, du bekommst eine Antwort.</p></article>
+      <article class="tile"><span class="n">03</span><h3>Dauerhaftes Ernährungssystem</h3><p>Keine Diät mit Enddatum. Ein System, das mit Kantine und Familie funktioniert.</p></article>
+      <article class="tile"><span class="n">04</span><h3>Routinen &amp; Gewohnheiten</h3><p>Schritt für Schritt aufgebaut, bis sie sich nicht mehr nach Disziplin anfühlen.</p></article>
+      <article class="tile"><span class="n">05</span><h3>Mindeststandards</h3><p>Für Wochen, in denen nichts läuft, steht ein Minimum, das immer geht.</p></article>
+      <article class="tile"><span class="n">06</span><h3>Reflexion &amp; Check-ins</h3><p>Journaling und Fragebögen zeigen dir schwarz auf weiß, wo du stehst.</p></article>
     </div>
-  </div>
-
-  <div class="foot-line"></div>
-  <div class="foot">
-    <span>Aaron Hannig Personal Training · Wundensteinstraße 11 · 71679 Asperg</span>
-    <span>personalcoachaaron.de · Seite 1 von 2</span>
   </div>
 </section>
 
 <!-- ======================= SEITE 2 ======================= -->
 <section class="page">
   <div class="top">
-    <div style="display:flex;align-items:center;gap:3.5mm">
+    <div class="mark">
       <img src="../logo-mark.png" alt="" />
       <span class="wordmark">Personal Coach Aaron</span>
     </div>
     <span class="right">1:1 Online Coaching</span>
   </div>
 
-  <div class="sec" style="margin-top:9mm">
+  <div class="sec" style="margin-top:10mm">
     <p class="kicker">Der Weg</p>
     <h2>Wie wir deinen Fortschritt sicherstellen</h2>
     <div class="phases">
-      <div class="phase"><span class="n">Phase 1</span><h3>Klarheit</h3><p>Analyse statt Annahmen: Wo stehst du, wie sieht deine Woche wirklich aus, und woran ist es bisher gescheitert?</p></div>
-      <div class="phase"><span class="n">Phase 2</span><h3>Basis</h3><p>Wenige Gewohnheiten, dafür verlässlich. Erste Routinen, deine Mindeststandards und ein Ernährungssystem, das auch an vollen Tagen trägt.</p></div>
-      <div class="phase"><span class="n">Phase 3</span><h3>Aufbau</h3><p>Jetzt wird gesteigert. Im wöchentlichen Call lösen wir, was der Alltag dazwischenfunkt. Check-ins zeigen schwarz auf weiß, dass sich etwas bewegt.</p></div>
-      <div class="phase"><span class="n">Phase 4</span><h3>Selbstläufer</h3><p>Die Routinen tragen sich selbst. Wir arbeiten gezielt darauf hin, dass du irgendwann keinen Coach mehr brauchst.</p></div>
+      <div class="phase"><span class="n">Phase 1</span><h3>Klarheit</h3><p>Wo stehst du, wie sieht deine Woche wirklich aus, woran ist es bisher gescheitert?</p></div>
+      <div class="phase"><span class="n">Phase 2</span><h3>Basis</h3><p>Erste Routinen, deine Mindeststandards, ein Ernährungssystem, das trägt.</p></div>
+      <div class="phase"><span class="n">Phase 3</span><h3>Aufbau</h3><p>Jetzt wird gesteigert. Was der Alltag dazwischenfunkt, lösen wir im Call.</p></div>
+      <div class="phase"><span class="n">Phase 4</span><h3>Selbstläufer</h3><p>Die Routinen tragen sich selbst — bis du keinen Coach mehr brauchst.</p></div>
     </div>
     <p class="note">
-      <b>Das Prinzip dahinter:</b> In ein paar Monaten im Jahr kommt immer etwas dazwischen. Unsere
-      festgelegten Mindeststandards sorgen dafür, dass deine Routinen auch dann am Leben bleiben —
-      statt dass alles über Bord geht und du im Januar von vorn anfängst.
+      <b>Das Prinzip dahinter:</b> In ein paar Monaten im Jahr kommt immer etwas dazwischen. Die
+      Mindeststandards sorgen dafür, dass deine Routinen auch dann am Leben bleiben — statt dass du
+      im Januar wieder von vorn anfängst.
     </p>
   </div>
 
@@ -270,24 +189,19 @@ h3{
     <h2>Das sagen meine Kunden</h2>
     <div class="quotes">
       <blockquote class="quote">„Heute — acht Monate später — bin ich 50 kg leichter und lebe ein komplett anderes Leben."<span class="stars">★★★★★</span></blockquote>
-      <blockquote class="quote">„Ich habe meine Ernährung komplett umgestellt, Fett abgenommen, Muskeln aufgebaut und bin wieder richtig fit."<span class="stars">★★★★★</span></blockquote>
+      <blockquote class="quote">„Ernährung umgestellt, Fett abgenommen, Muskeln aufgebaut und wieder richtig fit geworden."<span class="stars">★★★★★</span></blockquote>
       <blockquote class="quote">„Eigentlich waren nur ein paar Monate geplant — es hat so viel Spaß gemacht, dass ich weitermachen wollte!"<span class="stars">★★★★★</span></blockquote>
     </div>
     <span class="rating"><b>5,0 von 5</b> auf Google Rezensionen</span>
   </div>
 
-  <div class="sec">
+  <div class="sec" style="margin-top:6mm">
     <div class="price">
       <p class="kicker">Was es kostet</p>
       <h2>Dazu sage ich dir hier bewusst keine Zahl</h2>
       <p>
-        Der Preis hängt vom Umfang ab, vom Zeitraum und davon, was du konkret brauchst. Eine Zahl,
-        die hier pauschal stünde, wäre für die eine Hälfte zu hoch und für die andere zu niedrig.
-      </p>
-      <p>
-        Deshalb klären wir das im <b style="color:var(--ink)">kostenlosen Erstgespräch</b>: Wir legen
-        gemeinsam den Rahmen fest, danach bekommst du eine klare Zahl — ohne Verkaufsdruck. Zahlbar
-        als Gesamtbetrag oder in monatlichen Raten.
+        Der Preis hängt vom Umfang und vom Zeitraum ab. Die klare Zahl bekommst du im
+        <b>kostenlosen Erstgespräch</b> — ohne Verkaufsdruck. Zahlbar als Gesamtbetrag oder in Raten.
       </p>
     </div>
   </div>
@@ -298,21 +212,18 @@ h3{
     <div class="close-inner">
       <h2>Worauf wartest du?</h2>
       <p>
-        Der erste Schritt ist ein lockeres Gespräch, fünfzehn bis dreißig Minuten. Ohne Kosten, ohne
-        Verpflichtung — nur die Frage, ob das Coaching das Richtige für dich ist. Und wenn es das aus
-        meiner Sicht nicht ist, sage ich dir das offen.
+        Fünfzehn bis dreißig Minuten, ohne Kosten und ohne Verpflichtung — nur die Frage, ob das
+        Coaching das Richtige für dich ist. Such dir einfach einen Termin aus:
       </p>
-      <div class="steps">
-        <div class="step"><span class="i">SCHRITT 1</span><b>Termin aussuchen</b>Auf personalcoachaaron.de einen Zeitpunkt wählen, der dir passt.</div>
-        <div class="step"><span class="i">SCHRITT 2</span><b>Kennenlernen</b>15–30 Minuten per Zoom oder WhatsApp-Videocall.</div>
-        <div class="step"><span class="i">SCHRITT 3</span><b>Entscheiden</b>Du weißt danach genau, was dich erwartet und was es kostet.</div>
-      </div>
+      <a class="cta" href="https://calendly.com/personalcoach-aaron/dein-kostenloses-erstgesprach">
+        <span class="big">Kostenloses Erstgespräch buchen</span>
+        <span class="url">calendly.com/personalcoach-aaron/dein-kostenloses-erstgesprach</span>
+      </a>
+      <p class="contact">
+        Lieber direkt schreiben? <a href="mailto:personalcoach.aaron@gmail.com">personalcoach.aaron@gmail.com</a>
+        · Instagram <a href="https://www.instagram.com/coach.aaron.hannig/">@coach.aaron.hannig</a>
+      </p>
     </div>
-  </div>
-
-  <div class="foot" style="z-index:2">
-    <span><a href="mailto:personalcoach.aaron@gmail.com">personalcoach.aaron@gmail.com</a> · +49 157 39313893 · Instagram @coach.aaron.hannig</span>
-    <span style="text-align:right"><a href="https://www.personalcoachaaron.de/">personalcoachaaron.de</a> · Seite 2 von 2</span>
   </div>
 </section>
 
