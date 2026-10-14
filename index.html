@@ -17,6 +17,8 @@
 <meta property="og:site_name" content="Personal Coach Aaron" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="canonical" href="https://www.personalcoachaaron.de/" />
+<link rel="preload" href="fonts/archivo-k3kQo8UDI-1M0wlSfdnoLg.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="fonts/instrument-sans-pxiTypc9vsFDm051Uf6KVwgkfoSxQ0GsQv8ToedPibnr0SZe1Q.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="fonts/fonts.css" />
 <link rel="stylesheet" href="styles.css" />
 <link rel="icon" href="favicon.png" type="image/png" />
@@ -144,7 +146,7 @@
     </div>
     <div class="timeline reveal">
       <div class="timeline-rail" role="tablist" aria-label="Phasen des Coachings"></div>
-      <div class="timeline-panel">
+      <div class="timeline-panel" id="phase-panel" role="tabpanel" tabindex="0">
         <div class="panel-body">
           <p class="panel-n" id="phase-n">Phase 1</p>
           <h3 id="phase-title"></h3>
@@ -170,7 +172,7 @@
 
       <div class="lab-year" id="lab-year"></div>
 
-      <p class="lab-line" id="lab-line"></p>
+      <p class="lab-line" id="lab-line" role="status" aria-live="polite"></p>
 
       <p class="lab-note">Die festgelegten Mindeststandards in unserer Zusammenarbeit sorgen dafür, dass deine nach und nach aufgebauten, guten Gewohnheiten und Routinen auch in den Phasen weiter am Leben bleiben, in denen du sonst erfahrungsgemäß alles wieder über Bord geworfen hättest.</p>
     </div>

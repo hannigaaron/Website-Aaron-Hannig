@@ -39,12 +39,14 @@
 
   const rail  = $('.timeline-rail');
   const pBody = $('.panel-body');
+  const pPanel = $('#phase-panel');
   const pNum  = $('#phase-n'), pName = $('#phase-title'), pText = $('#phase-text');
 
   if (rail) {
     rail.innerHTML = PHASES.map((p, i) => `
-      <button class="phase${i === 0 ? ' is-active' : ''}" role="tab"
-              aria-selected="${i === 0}" data-i="${i}">
+      <button class="phase${i === 0 ? ' is-active' : ''}" role="tab" id="phase-tab-${i}"
+              aria-selected="${i === 0}" aria-controls="phase-panel"
+              tabindex="${i === 0 ? 0 : -1}" data-i="${i}">
         <span class="phase-n">Phase ${i + 1}</span>
         <span class="phase-name">${p.name}</span>
       </button>`).join('');
@@ -61,7 +63,11 @@
       $$('.phase', rail).forEach((b, n) => {
         b.classList.toggle('is-active', n === i);
         b.setAttribute('aria-selected', String(n === i));
+        /* Nur der aktive Reiter liegt im Tab-Lauf; zwischen den Reitern
+           geht es mit den Pfeiltasten weiter (WAI-ARIA, roving tabindex). */
+        b.tabIndex = n === i ? 0 : -1;
       });
+      if (pPanel) pPanel.setAttribute('aria-labelledby', `phase-tab-${i}`);
       if (hasGSAP) {
         gsap.fromTo(pBody, { opacity: 0, y: 14 },
           { opacity: 1, y: 0, duration: .45, ease: 'power3.out', onStart: () => render(i) });
@@ -71,6 +77,7 @@
       }
     };
     render(0);
+    if (pPanel) pPanel.setAttribute('aria-labelledby', 'phase-tab-0');
 
     rail.addEventListener('click', (e) => {
       const btn = e.target.closest('.phase');

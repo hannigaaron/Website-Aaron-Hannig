@@ -131,6 +131,21 @@ Die Adresse `https://www.personalcoachaaron.de` steht in `og:image`,
 `og:url` und den `canonical`-Angaben. Wird die Domain eine andere, müssen
 diese vier Stellen mitgeändert werden.
 
+## Prüfwerkzeuge im Repo
+Unter `.claude/skills/` liegen zwei fremde Regelsätze (beide MIT-Lizenz, aus
+`vercel-labs/agent-skills` und `Leonxlnx/taste-skill`). Sie sind Werkzeuge,
+keine Vorgaben — die verbindlichen Regeln stehen oben in dieser Datei.
+
+| Skill | Wofür | Aufruf |
+|---|---|---|
+| `web-design-guidelines` | Prüfliste für Barrierefreiheit, Fokus, Touch, Bilder, Performance | holt die Regeln von `raw.githubusercontent.com/vercel-labs/web-interface-guidelines` |
+| `taste-skill` | Gestaltungsregeln gegen Baukasten-Optik; enthält einen Linter | `node .claude/skills/taste-skill/scripts/lint.mjs index.html styles.css script.js` |
+
+Der `taste-skill`-Linter meldet bewusst getroffene Entscheidungen dieser Seite
+als Fehler (Kicker über den Überschriften, die Nummern 01–06, Haarlinien,
+Verläufe aus den Logofarben). Das sind keine Mängel. Wer ihn laufen lässt,
+prüft die Treffer einzeln, statt sie abzuarbeiten.
+
 ## Wichtig: Arbeit sichern
 Der Container ist flüchtig. Committen reicht nicht — ohne Push ist die
 Arbeit beim nächsten Start weg. Der letzte Rettungsanker war das
