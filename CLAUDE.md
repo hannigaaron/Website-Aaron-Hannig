@@ -18,7 +18,7 @@ Handy 390/430 px, iPad 768 px hoch und 1024 px quer, Desktop 1440 px.
   während einer Animation. Der Zoom auf den Überschriften reserviert seinen
   Platz vorher im Layout (`.head-box` mit Innenabstand unten), statt sich
   über den Text darunter zu schieben. Vor dem Fertigmelden wird das mit
-  `scratchpad/overlap.js` auf allen fünf Breiten geprüft.
+  `tools/pruefen.js` auf allen fünf Breiten geprüft.
 - Die Navigation bricht unter 820 px auf zwei Zeilen um; dort braucht
   `scroll-margin-top` den größeren Wert.
 
@@ -127,11 +127,41 @@ Im Repo liegen die Dateien, die eine echte Domain braucht:
 | `_redirects` | leitet die alten Wix-Adressen dauerhaft (301) auf die neuen |
 | `og-image.jpg` | 1200 × 630, das Vorschaubild beim Teilen |
 
-Die Adresse `https://www.personalcoachaaron.de` steht in `og:image`,
-`og:url` und den `canonical`-Angaben. Wird die Domain eine andere, müssen
-diese vier Stellen mitgeändert werden.
+Die Adresse `https://personalcoachaaron.de` steht in `og:image`, `og:url`,
+den `canonical`-Angaben, im JSON-LD, in `sitemap.xml`, `robots.txt` und
+`llms.txt`. Wird die Domain eine andere, müssen alle mitgeändert werden.
+
+## Gefunden werden: Suchmaschinen und KI-Assistenten
+Viele KI-Crawler (GPTBot, ClaudeBot, PerplexityBot) führen **kein JavaScript**
+aus. Deshalb gilt: **Jeder Inhalt steht im HTML.** Das Skript darf verschönern
+und bewegen, aber keinen Text erzeugen, den es ohne Skript nicht gäbe. Die
+Phasen und die Kundenstimmen standen früher nur im Skript — das ist behoben
+und soll so bleiben.
+
+| Datei / Stelle | Wofür |
+|---|---|
+| JSON-LD im `<head>` von `index.html` | Unternehmen, Person, Leistung, FAQ als strukturierte Daten |
+| `llms.txt` | Kurzfassung des Angebots für KI-Assistenten |
+| `robots.txt` | erlaubt ausdrücklich auch die KI-Crawler |
+| `_headers` | Zwischenspeichern (Schriften, Bibliotheken, Bilder) und Sicherheitskopfzeilen |
+
+Regeln dazu:
+- Die FAQ im JSON-LD muss **wortgleich** mit der sichtbaren FAQ sein. Wer eine
+  Frage ändert, ändert beide Stellen — und `llms.txt`.
+- Keine Sternebewertung (`aggregateRating`) ins JSON-LD: Die Bewertungen
+  stammen von Google, nicht von dieser Seite; Google wertet das als
+  Eigenlob-Markup.
+- Hauptadresse ist `https://personalcoachaaron.de` **ohne www** (www leitet
+  um). Canonical, `og:url`, Sitemap und JSON-LD nennen genau diese Form.
+- Fotos liegen zusätzlich als WebP vor und werden über `<picture>` ausgeliefert;
+  wer ein Foto tauscht, erzeugt das WebP neu (`convert x.jpg -quality 80 x.webp`).
 
 ## Prüfwerkzeuge im Repo
+`tools/pruefen.js` ist die Pflichtprüfung (seitliches Scrollen, Text über Text,
+Fremdanfragen, Skriptfehler auf allen fünf Breiten). Einmalig `npm install` in
+`tools/`, dann bei laufendem `python3 -m http.server 8000`: `node tools/pruefen.js`.
+`tools/shot.js <name> <breite> 0 "#abschnitt"` macht ein Bildschirmfoto.
+
 Unter `.claude/skills/` liegen zwei fremde Regelsätze (beide MIT-Lizenz, aus
 `vercel-labs/agent-skills` und `Leonxlnx/taste-skill`). Sie sind Werkzeuge,
 keine Vorgaben — die verbindlichen Regeln stehen oben in dieser Datei.

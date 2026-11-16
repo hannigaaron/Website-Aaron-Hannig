@@ -30,69 +30,6 @@
     track.innerHTML = row + row;
   }
 
-  const PHASES = [
-    { name: 'Klarheit', text: 'Analyse statt Annahmen: Wo stehst du, wie sieht deine Woche wirklich aus, und woran ist es bisher gescheitert? Daraus entsteht eine Richtung, die zu deinem Alltag passt — nicht zu einem Idealbild.' },
-    { name: 'Basis', text: 'Wenige Gewohnheiten, dafür verlässlich. Wir setzen die ersten Routinen auf, legen deine Mindeststandards fest und bringen dein Ernährungssystem in eine Form, die auch an vollen Tagen trägt.' },
-    { name: 'Aufbau', text: 'Jetzt wird gesteigert. Im wöchentlichen Call analysieren wir, was der Alltag dazwischenfunkt, und lösen es konkret. Journaling und Check-ins zeigen dir schwarz auf weiß, dass sich etwas bewegt.' },
-    { name: 'Selbstläufer', text: 'Die Routinen tragen sich selbst. Wir prüfen, was auch ohne Betreuung standhält, und arbeiten gezielt darauf hin, dass du irgendwann keinen Coach mehr brauchst.' }
-  ];
-
-  const rail  = $('.timeline-rail');
-  const pBody = $('.panel-body');
-  const pPanel = $('#phase-panel');
-  const pNum  = $('#phase-n'), pName = $('#phase-title'), pText = $('#phase-text');
-
-  if (rail) {
-    rail.innerHTML = PHASES.map((p, i) => `
-      <button class="phase${i === 0 ? ' is-active' : ''}" role="tab" id="phase-tab-${i}"
-              aria-selected="${i === 0}" aria-controls="phase-panel"
-              tabindex="${i === 0 ? 0 : -1}" data-i="${i}">
-        <span class="phase-n">Phase ${i + 1}</span>
-        <span class="phase-name">${p.name}</span>
-      </button>`).join('');
-
-    let current = 0;
-    const render = (i) => {
-      pNum.textContent = `Phase ${i + 1}`;
-      pName.textContent = PHASES[i].name;
-      pText.textContent = PHASES[i].text;
-    };
-    const select = (i) => {
-      if (i === current) return;
-      current = i;
-      $$('.phase', rail).forEach((b, n) => {
-        b.classList.toggle('is-active', n === i);
-        b.setAttribute('aria-selected', String(n === i));
-        /* Nur der aktive Reiter liegt im Tab-Lauf; zwischen den Reitern
-           geht es mit den Pfeiltasten weiter (WAI-ARIA, roving tabindex). */
-        b.tabIndex = n === i ? 0 : -1;
-      });
-      if (pPanel) pPanel.setAttribute('aria-labelledby', `phase-tab-${i}`);
-      if (hasGSAP) {
-        gsap.fromTo(pBody, { opacity: 0, y: 14 },
-          { opacity: 1, y: 0, duration: .45, ease: 'power3.out', onStart: () => render(i) });
-      } else {
-        pBody.classList.add('is-swapping');
-        setTimeout(() => { render(i); pBody.classList.remove('is-swapping'); }, reduced ? 0 : 220);
-      }
-    };
-    render(0);
-    if (pPanel) pPanel.setAttribute('aria-labelledby', 'phase-tab-0');
-
-    rail.addEventListener('click', (e) => {
-      const btn = e.target.closest('.phase');
-      if (btn) select(Number(btn.dataset.i));
-    });
-    rail.addEventListener('keydown', (e) => {
-      const step = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 1, ArrowUp: -1 }[e.key];
-      if (!step) return;
-      e.preventDefault();
-      const next = (current + step + PHASES.length) % PHASES.length;
-      select(next);
-      $$('.phase', rail)[next].focus();
-    });
-  }
-
   /* ---------- Das Prinzip: ein Jahr, zwei Wege ----------
      Ein Schalter, eine Reihe mit zwoelf Monaten, ein Satz als Ergebnis.
      In drei Monaten kommt etwas dazwischen. Ohne Mindeststandard fallen sie
@@ -132,26 +69,16 @@
 
   /* ---------- Kundenstimmen als Laufband ----------
      Die Karten haengen zweimal aneinander, damit die Schleife nahtlos ist. */
-  const QUOTES = [
-    'Heute — acht Monate später — bin ich 50 kg leichter und lebe ein komplett anderes Leben.',
-    'Eigentlich waren nur ein paar Monate geplant, aber es hat so viel Spaß gemacht, dass ich unbedingt weitermachen wollte! 💪',
-    'Aaron hat mir gezeigt, dass sich Spaß und Durchbeißen nicht ausschließen müssen.',
-    'Ich habe meine Ernährung komplett umgestellt, Fett abgenommen, Muskeln aufgebaut und bin körperlich wieder richtig fit geworden.',
-    'Alles in allem kann ich jedem nur wünschen und empfehlen, ein Kennenlerngespräch zu vereinbaren.',
-    'Aaron ist ein super Personal Trainer! Ich habe mit ihm abgenommen, neue Routinen entwickelt und fühle mich besser denn je. Ich bin ihm für alles sehr dankbar!',
-    'Die Unterstützung war in allen Bereichen super — egal ob beim Training, bei der Ernährung oder in Sachen Motivation.',
-    'Er hat es tatsächlich geschafft, aus mir Couch-Potato einen begeisterten Krafttraining-Fan zu machen.'
-  ];
+  /* Die Kundenstimmen stehen im HTML, damit auch Suchmaschinen und KI-Crawler
+     sie lesen, die kein JavaScript ausfuehren. Fuers Laufband wird die Reihe
+     einmal verdoppelt; die Kopie ist fuer Screenreader ausgeblendet. */
   const qTrack = $('#quote-track');
   if (qTrack) {
-    const stars = Array.from({ length: 5 }, () =>
-      `<svg viewBox="0 0 24 24"><path d="${STAR}"/></svg>`).join('');
-    const row = QUOTES.map(t => `
-      <blockquote class="quote">
-        <p>${t}</p>
-        <footer><span class="q-stars" aria-hidden="true">${stars}</span></footer>
-      </blockquote>`).join('');
-    qTrack.innerHTML = row + row;
+    $$('.quote', qTrack).forEach(q => {
+      const c = q.cloneNode(true);
+      c.setAttribute('aria-hidden', 'true');
+      qTrack.appendChild(c);
+    });
   }
 
   /* ======================================================================

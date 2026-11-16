@@ -30,6 +30,8 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
+/* <picture> liefert nur das Format aus; fuers Layout zaehlt das <img> darin. */
+picture{display:contents}
 html{-webkit-text-size-adjust:100%}
 /* Seitliches Scrollen bleibt auf jeder Breite aus — grosse Headlines und
    das Laufband duerfen nach rechts herausragen, ohne die Seite zu weiten. */
@@ -256,27 +258,20 @@ section[id],main[id]{scroll-margin-top:86px}
 .perk p{margin-top:.6rem;font-size:.96rem;min-height:6.5em}
 
 /* ---------- Timeline ---------- */
-.timeline{display:grid;gap:1.4rem}
-.timeline-rail{display:flex;gap:.5rem;flex-wrap:wrap}
-.phase{font:inherit;text-align:left;cursor:pointer;flex:1 1 160px;padding:.95rem 1.15rem;
-  border:1px solid var(--line);background:var(--paper);border-radius:12px;
-  display:flex;flex-direction:column;gap:.2rem;color:var(--ink-mid);
-  transition:border-color .32s var(--ease),background-color .32s var(--ease),
-             transform .32s var(--ease),box-shadow .32s var(--ease)}
-.phase-n{font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);transition:color .3s}
-.phase-name{font-family:var(--display);font-weight:800;font-size:1.02rem;color:var(--ink);transition:color .3s}
-.phase:hover{border-color:var(--blue);transform:translateY(-3px)}
-.phase.is-active{background:var(--blue);border-color:var(--blue)}
-.phase.is-active .phase-n{color:rgba(46,46,46,.62)}
-.timeline-panel{display:grid;gap:clamp(1.5rem,4vw,3rem);
-  align-items:center;background:var(--paper);border:1px solid var(--line-soft);
-  border-radius:var(--r);padding:clamp(1.6rem,3vw,2.6rem)}
-.panel-body{transition:opacity .28s var(--ease),transform .28s var(--ease)}
-.panel-body.is-swapping{opacity:0;transform:translateY(10px)}
-.panel-n{font-family:var(--display);font-size:.78rem;font-weight:700;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--blue-deep);margin-bottom:.5rem}
-.panel-body h3{font-size:1.65rem}
-.panel-body>p:last-child{margin-top:.9rem;min-height:4.8em;max-width:70ch}
+/* Ablauf: vier Phasen nebeneinander, alle sichtbar. Die Linie oben wird von
+   Phase zu Phase kraeftiger — der Weg vom Anfang zum Selbstlaeufer. */
+.steps{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);
+  gap:clamp(1.4rem,2.6vw,2.6rem);max-width:var(--maxw);margin-inline:auto}
+.step{border-top:3px solid var(--blue);padding-top:1.15rem}
+.step:nth-child(1){border-top-color:rgba(147,221,244,.45)}
+.step:nth-child(2){border-top-color:rgba(147,221,244,.75)}
+.step:nth-child(4){border-top-color:var(--blue-deep)}
+.step-n{display:block;font-family:var(--display);font-size:.78rem;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--blue-deep);margin-bottom:.45rem}
+.step h3{font-size:1.5rem;margin-bottom:.6rem}
+.step p{font-size:.98rem}
+@media (max-width:1024px){.steps{grid-template-columns:repeat(2,1fr);row-gap:2.2rem}}
+@media (max-width:560px){.steps{grid-template-columns:1fr;row-gap:1.8rem}}
 
 /* ---------- Stimmen ----------
    Keine abgerundeten Kaertchen: harte Kanten, eine angeschnittene Ecke oben
@@ -379,7 +374,7 @@ section[id],main[id]{scroll-margin-top:86px}
   .brand{min-height:44px}
   .faq summary{padding-block:1.45rem}
   /* Hover-Effekte, die auf Touch nur kleben bleiben, abschalten */
-  .btn:hover,.quote:hover,.phase:hover,.goals li:hover,.rating:hover{transform:none}
+  .btn:hover,.quote:hover,.goals li:hover,.rating:hover{transform:none}
 }
 
 /* ---------- Reveal ---------- */
@@ -412,7 +407,7 @@ section[id],main[id]{scroll-margin-top:86px}
   .faq summary{padding-block:1.45rem}
   /* Kleinschrift nicht unter 12 px */
   .stat dt{font-size:.78rem}
-  .tile-n,.phase-n,.panel-n{font-size:.76rem}
+  .tile-n,.step-n{font-size:.76rem}
   .rating-text{font-size:.88rem}
   .media-frame::after{font-size:.74rem}
 
@@ -439,7 +434,6 @@ section[id],main[id]{scroll-margin-top:86px}
   .nav-links a{white-space:nowrap}
   .cut-top{--cut:5vw}
   .cta{clip-path:polygon(0 5vw,100% 0,100% 100%,0 100%)}
-  .panel-body>p:last-child{min-height:0}
   .sticky-cta{display:flex}
   main{padding-bottom:4.5rem}
 }

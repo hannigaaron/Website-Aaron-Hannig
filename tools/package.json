@@ -1,0 +1,1 @@
+{ "name": "pca-tools", "private": true, "description": "Pruefskripte fuer die Website", "dependencies": { "playwright-core": "^1.55.0" } }
