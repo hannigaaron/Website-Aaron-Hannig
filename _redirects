@@ -15,6 +15,10 @@
 /broschuere.pdf /broschuere/Infobroschuere-Personal-Coach-Aaron.pdf 200
 /broschuere     /broschuere/Infobroschuere-Personal-Coach-Aaron.pdf 200
 
+# 2X30 SYSTEM: Produktseite und eigene AGB
+/2x30           /2x30.html          200
+/agb-2x30       /agb-2x30.html      200
+
 # Fuer alles Uebrige greift 404.html — Netlify liefert sie automatisch aus.
 # Eine Sammelumleitung /* -> / wird von Netlify verworfen, weil sie fuer die
 # Startseite selbst eine Schleife waere.

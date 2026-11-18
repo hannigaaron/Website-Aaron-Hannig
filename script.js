@@ -183,7 +183,7 @@
   }
 
   /* ---------- Aktiver Abschnitt in der Navigation ---------- */
-  const links = $$('.nav-links a');
+  const links = $$('.nav-links a[href^="#"]');
   const sections = links.map(a => $(a.getAttribute('href'))).filter(Boolean);
   if ('IntersectionObserver' in window && sections.length) {
     const spy = new IntersectionObserver((entries) => {

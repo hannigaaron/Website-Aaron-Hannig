@@ -23,8 +23,12 @@ Handy 390/430 px, iPad 768 px hoch und 1024 px quer, Desktop 1440 px.
   `scroll-margin-top` den größeren Wert.
 
 ### Inhalt
-- Nur **1:1 Online Coaching**. Kein Personal Training vor Ort, kein
-  2×30-System, keine feste Programmlaufzeit.
+- Die Startseite zeigt nur **1:1 Online Coaching**. Kein Personal Training vor Ort,
+  keine feste Programmlaufzeit.
+- Das **2X30 SYSTEM** (digitales PDF-Produkt, 49 €) hat eine eigene Seite
+  `2x30.html` unter `/2x30` mit eigenen AGB `agb-2x30.html`. Auf der Startseite
+  erscheint es nur als Reiter und Footer-Link. Die Seite nutzt eigene Schriften
+  (`fonts/2x30/`) und three.js (`vendor/three.min.js`) – alles lokal.
 - Das Wort **„Training" wird vermieden** — außer in Aarons Biografie.
   Es geht um Coaching, Fortschritt, Routinen, Gewohnheitsaufbau, Analyse,
   Lösungen, Mindeststandards und Langfristigkeit.
@@ -88,7 +92,8 @@ und lädt erst nach einem ausdrücklichen Klick (Zwei-Klick-Lösung). Wer eine
 externe Ressource ergänzt, legt sie lokal ab oder hängt sie hinter einen
 Klick — und passt `datenschutz.html` an.
 
-Die Rechtsseiten sind `impressum.html`, `datenschutz.html` und `agb.html`.
+Die Rechtsseiten sind `impressum.html`, `datenschutz.html`, `agb.html` (Coaching)
+und `agb-2x30.html` (2X30 SYSTEM, Kauf über Stripe, Download über Google Drive).
 Sie sind vollständig ausgefüllt — keine Platzhalter mehr. Wer neue einfügt,
 markiert sie mit `<span class="todo">`; die stehen gelb hinterlegt **im
 ausgelieferten HTML** und sind für Besucher sichtbar, müssen vor dem
