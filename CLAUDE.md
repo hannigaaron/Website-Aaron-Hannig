@@ -99,7 +99,7 @@ markiert sie mit `<span class="todo">`; die stehen gelb hinterlegt **im
 ausgelieferten HTML** und sind für Besucher sichtbar, müssen vor dem
 Livegang also restlos verschwinden.
 
-Eingetragen sind: Anschrift Wundensteinstraße 11, 71679 Asperg,
+Eingetragen sind: Anschrift Wunnensteinstraße 11, 71679 Asperg,
 Kleinunternehmer nach § 19 UStG, Hoster Netlify, Inc. (USA, EU-U.S. DPF),
 Calendly (USA, EU-U.S. DPF), WhatsApp Ireland Ltd. und Zoom für die Calls,
 Mindestlaufzeit vier Monate, danach unbefristet mit vier Wochen Kündigungsfrist zum Monatsende, Zahlung als
